@@ -209,7 +209,7 @@ td {
 }
 
 .form-control {
-  border: 2px solid #9c99a4 !important;
+  border: 1px solid #e9eaeb !important;
   border-radius: 5px !important;
   color: #333 !important;
   font-size: 1rem !important;
@@ -806,7 +806,7 @@ th[scope="col"] {
   gap: 10px;
   background: #fff;
   border: 1px solid #ddd;
-  padding: 10px 20px;
+  padding: 10px 5px;
   border-radius: 8px;
   transition: 0.3s;
   cursor: pointer;
@@ -2072,7 +2072,7 @@ $gifURL: "/gr-1.gif";
   width: 100%;
   background-color: #f8f9fc;
   border-radius: 20px;
-  padding: 8px;
+  padding: 16px 8px;
 }
 
 .layered-card-outer {
@@ -2132,7 +2132,7 @@ $gifURL: "/gr-1.gif";
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: #f5f5f5;
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
@@ -2150,13 +2150,7 @@ $gifURL: "/gr-1.gif";
 }
 
 input:checked + .slider {
-  background: linear-gradient(
-    90deg,
-    #fccec0 0%,
-    #ebacc9 33%,
-    #ceb6da 66%,
-    #9fcaed 100%
-  );
+  background-color: #f5f5f5;
 }
 
 input:focus + .slider {
