@@ -11,7 +11,7 @@ import InterviewQuestionModal from "./InterviewQuestionModal";
 import FullScreenLoadingAnimation from "./FullScreenLoadingAnimation";
 
 export default function (props) {
-  const { questions, setQuestions, jobTitle, description } = props;
+  const { questions, setQuestions, jobTitle, description, isGeneratingQuestions: isGeneratingAll } = props;
   const [questionGenPrompt, setQuestionGenPrompt] = useState("");
   const questionCount = 5;
   const [showQuestionModal, setShowQuestionModal] = useState("");
@@ -360,7 +360,7 @@ export default function (props) {
 
   return (
     <div>
-      <div className="layered-card-middle">
+      <div >
         <div
           style={{
             display: "flex",
@@ -378,7 +378,7 @@ export default function (props) {
               gap: 8,
             }}
           >
-            <div
+            {/* <div
               style={{
                 width: 32,
                 height: 32,
@@ -393,11 +393,11 @@ export default function (props) {
                 className="la la-comment-alt"
                 style={{ color: "#FFFFFF", fontSize: 20 }}
               ></i>
-            </div>
-            <span style={{ fontSize: 16, color: "#181D27", fontWeight: 700 }}>
+            </div> */}
+            {/* <span style={{ fontSize: 16, color: "#181D27", fontWeight: 700 }}>
               Interview Questions
-            </span>
-            <div
+            </span> */}
+            {/* <div
               style={{
                 borderRadius: "50%",
                 width: 30,
@@ -416,9 +416,9 @@ export default function (props) {
                 (acc, group) => acc + group.questions.length,
                 0
               )}
-            </div>
+            </div> */}
           </div>
-          <button
+          {/* <button
             style={{
               width: "fit-content",
               background: "black",
@@ -435,9 +435,9 @@ export default function (props) {
           >
             <i className="la la-bolt" style={{ fontSize: 20 }}></i> Generate All
             Questions
-          </button>
+          </button> */}
         </div>
-        <div className="layered-card-content">
+        <div >
           <div className="questions-set">
             {questions.map((group, index) => (
               <div
@@ -692,24 +692,34 @@ export default function (props) {
                           borderRadius: "60px",
                           cursor: "pointer",
                           whiteSpace: "nowrap",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "8px",
                         }}
                         onClick={() => {
                           generateQuestions(group.category);
                         }}
                       >
-                        <i className="la la-bolt" style={{ fontSize: 20 }}></i>{" "}
-                        Generate Questions
+                         <img
+                  src="/generate-vector.svg"
+                  alt="Generate Icon"
+                  style={{ width: "20px", height: "20px" }}
+                />
+                        Generate questions
                       </button>
                       <button
                         style={{
-                          width: "fit-content",
-                          color: "#414651",
-                          background: "#fff",
-                          border: "1px solid #D5D7DA",
-                          padding: "8px 16px",
-                          borderRadius: "60px",
-                          cursor: "pointer",
-                          whiteSpace: "nowrap",
+                         width: "fit-content",
+                        color: "#414651",
+                        background: "#fff",
+                        border: "1px solid #D5D7DA",
+                        padding: "8px 16px",
+                        borderRadius: "60px",
+                        cursor: "pointer",
+                        whiteSpace: "nowrap",
+                        display: "flex",            
+                        alignItems: "center",       
+                        gap: "8px",                 
                         }}
                         onClick={() => {
                           setShowQuestionModal("add");
@@ -720,7 +730,7 @@ export default function (props) {
                           className="la la-plus-circle"
                           style={{ fontSize: 20 }}
                         ></i>{" "}
-                        Manually Add
+                        <span style={{ position: "relative", top: "-1px" }}>Manually Add</span>
                       </button>
                     </div>
                     {group.questions.length > 0 && (
@@ -821,7 +831,7 @@ export default function (props) {
           }}
         />
       )}
-      {isGeneratingQuestions && (
+      {(isGeneratingQuestions || isGeneratingAll) && (
         <FullScreenLoadingAnimation
           title="Generating questions..."
           subtext="Please wait while Jia is generating the questions"

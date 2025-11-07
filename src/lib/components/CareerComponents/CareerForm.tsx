@@ -5,7 +5,7 @@ import InterviewQuestionGeneratorV2 from "./InterviewQuestionGeneratorV2";
 import RichTextEditor from "@/lib/components/CareerComponents/RichTextEditor";
 import CustomDropdown from "@/lib/components/CareerComponents/CustomDropdown";
 import philippineCitiesAndProvinces from "../../../../public/philippines-locations.json";
-import { candidateActionToast, errorToast } from "@/lib/Utils";
+import { guid, interviewQuestionCategoryMap ,candidateActionToast, errorToast } from "@/lib/Utils";
 import { useAppContext } from "@/lib/context/AppContext";
 import axios from "axios";
 import CareerActionModal from "./CareerActionModal";
@@ -212,6 +212,76 @@ export default function CareerForm({
       type: "range" as const,
     },
   ];
+
+  const [isGeneratingQuestions, setIsGeneratingQuestions] = useState(false);
+  const questionCount = 5;
+
+  const generateAllQuestions = async () => {
+  try {
+    if (!jobTitle.trim() || !description.trim()) {
+      errorToast("Please fill in all fields", 1500);
+      return;
+    }
+    setIsGeneratingQuestions(true);
+
+    const interviewCategories = Object.keys(interviewQuestionCategoryMap);
+    const response = await axios.post("/api/llm-engine", {
+      systemPrompt: "You are a helpful assistant that can answer questions and help with tasks.",
+      prompt: `Generate ${questionCount * interviewCategories.length} interview questions for the following Job opening:
+      Job Title:
+      ${jobTitle}
+      Job Description:
+      ${description}
+
+      ${interviewCategories.map(category => `Category:
+        ${category}
+        Category Description:
+        ${interviewQuestionCategoryMap[category].description}`).join("\n")}
+
+      ${interviewCategories.map(category => `${questionCount} questions for ${category}`).join(", ")}
+
+      ${
+        questions.reduce((acc, group) => acc + group.questions.length, 0) > 0
+          ? `Do not generate questions that are already covered in this list:\n${questions
+              .map(group => group.questions.map((question, index) => `          ${index + 1}. ${question.question}`).join("\n"))
+              .join("\n")}`
+          : ""
+      }
+
+      return it in json format following this for each element {category: "category", questions: ["question1", "question2", "question3", "question4", "question5"]}
+      return only the json array, nothing else, now markdown format just pure json code.
+      `,
+    });
+
+    let finalGeneratedQuestions = response.data.result;
+    finalGeneratedQuestions = finalGeneratedQuestions.replace("```json", "").replace("```", "");
+    finalGeneratedQuestions = JSON.parse(finalGeneratedQuestions);
+
+    const newArray = [...questions];
+    finalGeneratedQuestions.forEach((questionGroup: { category: string; questions: string[] }) => {
+      const categoryIndex = newArray.findIndex(q => q.category === questionGroup.category);
+      if (categoryIndex !== -1) {
+        const newQuestions = questionGroup.questions.map(q => ({ id: guid(), question: q }));
+        newArray[categoryIndex].questions = [...newArray[categoryIndex].questions, ...newQuestions];
+      }
+    });
+
+    setQuestions(newArray);
+
+    candidateActionToast(
+      <span style={{ fontSize: 14, fontWeight: 700, color: "#181D27", marginLeft: 8 }}>
+        Questions generated successfully
+      </span>,
+      1500,
+      <i className="la la-check-circle" style={{ color: "#039855", fontSize: 32 }}></i>
+    );
+  } catch (err) {
+    console.log(err);
+    errorToast("Error generating questions, please try again", 1500);
+  } finally {
+    setIsGeneratingQuestions(false);
+  }
+};
 
   const questionTypes = [
     { name: "Short Answer", value: "short-answer", icon: "las la-user" },
@@ -638,7 +708,9 @@ const handleSaveAndContinue = async () => {
       setIsSavingCareer(false);
     }
   }
-};
+  };
+  
+
 
   useEffect(() => {
     const parseProvinces = () => {
@@ -704,28 +776,33 @@ const handleSaveAndContinue = async () => {
                   }}
                   onClick={saveDraft}
                 >
-                  Save Draft
+                  Save as Unpublished
                 </button>
                 <button
-                  disabled={isSavingCareer}
-                  style={{
-                    width: "fit-content",
-                    background: isSavingCareer ? "#D5D7DA" : "black",
-                    color: "#fff",
-                    border: "1px solid #E9EAEB",
-                    padding: "8px 16px",
-                    borderRadius: "60px",
-                    cursor: isSavingCareer ? "not-allowed" : "pointer",
-                    whiteSpace: "nowrap",
-                  }}
-                  onClick={handleSaveAndContinue}
-                >
-                  <i
-                    className="la la-check-circle"
-                    style={{ color: "#fff", fontSize: 20, marginRight: 8 }}
-                  ></i>
-                  Save and Continue
-                </button>
+                disabled={isSavingCareer}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "8px", 
+                  width: "fit-content",
+                  background: isSavingCareer ? "#D5D7DA" : "black",
+                  color: "#fff",
+                  border: "1px solid #E9EAEB",
+                  padding: "8px 16px",
+                  borderRadius: "60px",
+                  cursor: isSavingCareer ? "not-allowed" : "pointer",
+                  whiteSpace: "nowrap",
+                }}
+                onClick={handleSaveAndContinue}
+              >
+                Save and Continue
+                <i
+                  className="las la-arrow-right"
+                  style={{ color: "#fff", fontSize: 20 }}
+                ></i>
+              </button>
+
               </>
             ) : (
               <>
@@ -861,112 +938,100 @@ const handleSaveAndContinue = async () => {
           </div>
         </div>
       )}
-      {/* Stepper */}
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "flex-start",
-          marginTop: 4,
-          marginBottom: 8,
-          width: "100%",
-          position: "relative",
-        }}
-      >
-        {/* Background connecting line */}
+
+
+{/* Stepper */}
+<div
+  style={{
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "flex-start",
+    marginTop: 4,
+    marginBottom: 8,
+    width: "100%",
+    position: "relative",
+  }}
+>
+  {[
+    { id: 1, label: "Career Details & Team Access" },
+    { id: 2, label: "CV Review & Pre-screening" },
+    { id: 3, label: "AI Interview Setup" },
+    { id: 4, label: "Review Career" },
+  ].map((step, index, steps) => (
+    <div
+      key={step.id}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        flex: 1,
+        position: "relative",
+        zIndex: 2,
+      }}
+    >
+      {/* Connecting line before dot (except first) */}
+      {index > 0 && (
         <div
           style={{
             position: "absolute",
-            left: "12px",
-            right: "12px",
-            top: "12px",
-            height: "2px",
-            backgroundColor: "#E9EAEB",
-            zIndex: 0,
+            right: "calc(50% + 8px)",
+            top: "6px",
+            width: "calc(100% - 32px)",
+            height: "5px",
+            backgroundColor:
+              currentStep > steps[index - 1].id ? "#111827" : "#E9EAEB", // ✅ turns black once previous step is done
+            marginRight: "8px",
+            borderRadius: "999px",
+            transition: "background-color 0.3s ease", // nice smooth color change
           }}
         />
-        {/* Active connecting line (up to current step) */}
-        {currentStep > 1 && (
-          <div
-            style={{
-              position: "absolute",
-              left: "12px",
-              top: "12px",
-              height: "2px",
-              width: `${((currentStep - 1) / 3) * 100}%`,
-              backgroundColor: "#111827",
-              zIndex: 1,
-            }}
-          />
-        )}
-        {[
-          { id: 1, label: "Career Details & Team Access" },
-          { id: 2, label: "CV Review & Pre-screening" },
-          { id: 3, label: "AI Interview Setup" },
-          { id: 4, label: "Review Career" },
-        ].map((step, index) => (
-          <div
-            key={step.id}
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              flex: 1,
-              position: "relative",
-              zIndex: 2,
-            }}
-          >
-            {/* Step circle and dot */}
-            <div
-              style={{
-                cursor: "default",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: 8,
-              }}
-            >
-              <div
-                style={{
-                  width: "24px",
-                  height: "24px",
-                  borderRadius: "50%",
-                  backgroundColor:
-                    currentStep === step.id ? "#111827" : "#E9EAEB",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  border: "none",
-                }}
-              >
-                <div
-                  style={{
-                    width: "8px",
-                    height: "8px",
-                    borderRadius: "50%",
-                    backgroundColor:
-                      currentStep === step.id ? "#000000" : "#D5D7DA",
-                  }}
-                />
-              </div>
-              {/* Label */}
-              <span
-                style={{
-                  fontSize: "12px",
-                  fontWeight: currentStep === step.id ? 700 : 500,
-                  color: currentStep === step.id ? "#111827" : "#717680",
-                  textAlign: "center",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                {step.label}
-              </span>
-            </div>
-          </div>
-        ))}
+      )}
+
+      {/* Step circle with SVG */}
+      <div
+        style={{
+          cursor: "default",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 8,
+        }}
+      >
+        <img
+          src={
+            currentStep > step.id
+              ? "/check_circle.svg" // ✅ done
+              : "/dot-stepper.svg" // ⭕ current or upcoming
+          }
+          alt=""
+          style={{
+            width: "16.67px",
+            height: "16.67px",
+            filter:
+              currentStep >= step.id
+                ? "none"
+                : "grayscale(100%) opacity(0.5)",
+          }}
+        />
+        {/* Label */}
+        <span
+          style={{
+            fontSize: "12px",
+            fontWeight: currentStep === step.id ? 700 : 500,
+            color: currentStep === step.id ? "#111827" : "#717680",
+            textAlign: "center",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {step.label}
+        </span>
       </div>
+    </div>
+  ))}
+</div>
 
 
+      {/* End of Stepper */}
       
       <div
         style={{
@@ -1002,7 +1067,7 @@ const handleSaveAndContinue = async () => {
                       marginLeft: "15px",
                     }}
                   >
-                    Career Information
+                    1. Career Information
                   </span>
                   <div className="layered-card-content">
                     {/* basic-information section*/}
@@ -1018,7 +1083,6 @@ const handleSaveAndContinue = async () => {
                         style={{
                           fontSize: "14px",
                           fontWeight: 700,
-                          lineHeight: "20px",
                           color: "#181D27",
                         }}
                       >
@@ -1029,7 +1093,6 @@ const handleSaveAndContinue = async () => {
                         style={{
                           fontSize: "14px",
                           fontWeight: 500,
-                          lineHeight: "20px",
                           color: "#414651",
                         }}
                       >
@@ -1096,7 +1159,6 @@ const handleSaveAndContinue = async () => {
                         style={{
                           fontSize: "14px",
                           fontWeight: 700,
-                          lineHeight: "20px",
                           color: "#181D27",
                         }}
                       >
@@ -1113,11 +1175,10 @@ const handleSaveAndContinue = async () => {
                         <div style={{ width: "50%" }}>
                           <span
                             style={{
-                              fontSize: "14px",
-                              fontWeight: 500,
-                              lineHeight: "20px",
-                              color: "#414651",
-                            }}
+                          fontSize: "14px",
+                          fontWeight: 500,
+                          color: "#414651",
+                        }}
                           >
                             Employment Type
                           </span>
@@ -1155,11 +1216,10 @@ const handleSaveAndContinue = async () => {
                         <div style={{ width: "50%" }}>
                           <span
                             style={{
-                              fontSize: "14px",
-                              fontWeight: 500,
-                              lineHeight: "20px",
-                              color: "#414651",
-                            }}
+                          fontSize: "14px",
+                          fontWeight: 500,
+                          color: "#414651",
+                        }}
                           >
                             Arrangement
                           </span>
@@ -1204,10 +1264,9 @@ const handleSaveAndContinue = async () => {
                       }}
                     >
                       <span
-                        style={{
+                       style={{
                           fontSize: "14px",
                           fontWeight: 700,
-                          lineHeight: "20px",
                           color: "#181D27",
                         }}
                       >
@@ -1223,12 +1282,11 @@ const handleSaveAndContinue = async () => {
                       >
                         <div style={{ width: "100%" }}>
                           <span
-                            style={{
-                              fontSize: "14px",
-                              fontWeight: 500,
-                              lineHeight: "20px",
-                              color: "#414651",
-                            }}
+                             style={{
+                          fontSize: "14px",
+                          fontWeight: 500,
+                          color: "#414651",
+                        }}
                           >
                             Country
                           </span>
@@ -1244,11 +1302,10 @@ const handleSaveAndContinue = async () => {
                         <div style={{ width: "100%" }}>
                           <span
                             style={{
-                              fontSize: "14px",
-                              fontWeight: 500,
-                              lineHeight: "20px",
-                              color: "#414651",
-                            }}
+                          fontSize: "14px",
+                          fontWeight: 500,
+                          color: "#414651",
+                        }}
                           >
                             State / Province
                           </span>
@@ -1302,11 +1359,10 @@ const handleSaveAndContinue = async () => {
                         <div style={{ width: "100%" }}>
                           <span
                             style={{
-                              fontSize: "14px",
-                              fontWeight: 500,
-                              lineHeight: "20px",
-                              color: "#414651",
-                            }}
+                          fontSize: "14px",
+                          fontWeight: 500,
+                          color: "#414651",
+                        }}
                           >
                             City
                           </span>
@@ -1354,12 +1410,11 @@ const handleSaveAndContinue = async () => {
                         }}
                       >
                         <span
-                          style={{
-                            fontSize: "14px",
-                            fontWeight: 700,
-                            lineHeight: "20px",
-                            color: "#181D27",
-                          }}
+                         style={{
+                          fontSize: "14px",
+                          fontWeight: 700,
+                          color: "#181D27",
+                        }}
                         >
                           Salary
                         </span>
@@ -1370,7 +1425,7 @@ const handleSaveAndContinue = async () => {
                             flexDirection: "row",
                             gap: 5,
                             alignItems: "flex-start",
-                            minWidth: "130px",
+                            minWidth: "122px",
                           }}
                         >
                           <label className="switch">
@@ -1392,12 +1447,11 @@ const handleSaveAndContinue = async () => {
                             <span className="slider round"></span>
                           </label>
                           <span
-                            style={{
-                              fontWeight: 500,
-                              fontSize: "14px",
-                              lineHeight: "20px",
-                              color: "#414651",
-                            }}
+                             style={{
+                          fontSize: "14px",
+                          fontWeight: 500,
+                          color: "#414651",
+                        }}
                           >
                             {salaryNegotiable ? "Negotiable" : "Fixed"}
                           </span>
@@ -1414,11 +1468,10 @@ const handleSaveAndContinue = async () => {
                         <div style={{ flex: 1 }}>
                           <span
                             style={{
-                              fontSize: "14px",
-                              fontWeight: 500,
-                              lineHeight: "20px",
-                              color: "#414651",
-                            }}
+                          fontSize: "14px",
+                          fontWeight: 500,
+                          color: "#414651",
+                        }}
                           >
                             Minimum Salary
                           </span>
@@ -1510,12 +1563,11 @@ const handleSaveAndContinue = async () => {
                         </div>
                         <div style={{ flex: 1 }}>
                           <span
-                            style={{
-                              fontSize: "14px",
-                              fontWeight: 500,
-                              lineHeight: "20px",
-                              color: "#414651",
-                            }}
+                             style={{
+                          fontSize: "14px",
+                          fontWeight: 500,
+                          color: "#414651",
+                        }}
                           >
                             Maximum Salary
                           </span>
@@ -1632,6 +1684,8 @@ const handleSaveAndContinue = async () => {
                       }
                     }}
                     text={description}
+                    placeholder="Enter job description..."
+                    
                   />
                   {step1Errors.description && (
                     <span
@@ -2307,15 +2361,14 @@ const handleSaveAndContinue = async () => {
                   >
                     <span
                       style={{
-                        fontSize: "14px",
-                        fontWeight: 700,
-                        lineHeight: "20px",
-                        color: "#181D27",
-                      }}
+                          fontSize: "14px",
+                          fontWeight: 700,
+                          color: "#181D27",
+                        }}
                     >
                       CV Screening
                     </span>
-                    <span style={{ fontSize: 12, color: "#717680" }}>
+                    <span style={{ fontSize: 16, color: "#414651" }}>
                       Jia automatically endorses candidates who meet the chosen
                       criteria.
                     </span>
@@ -2339,20 +2392,26 @@ const handleSaveAndContinue = async () => {
                       marginTop: 12,
                     }}
                   >
-                    <span
-                      style={{
-                        fontSize: "14px",
-                        fontWeight: 700,
-                        lineHeight: "20px",
-                        color: "#181D27",
-                      }}
-                    >
-                      ✨ CV Secret Prompt{" "}
-                      <span style={{ color: "#717680", fontWeight: 500 }}>
-                        (optional)
-                      </span>
-                    </span>
-                    <span style={{ fontSize: 12, color: "#717680" }}>
+                   <span
+  style={{
+    fontSize: "14px",
+    fontWeight: 700,
+    color: "#181D27",
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "6px",
+  }}
+>
+  <img
+    src="/auto_awesome.svg"
+    alt="Auto Awesome Icon"
+    style={{ width: "16px", height: "16px" }}
+  />
+  CV Secret Prompt{" "}
+  <span style={{ color: "#717680", fontWeight: 400 }}>(optional)</span>
+</span>
+
+                    <span style={{ fontSize: 16, color: "#414651" }}>
                       Secret Prompts give you extra control over Jia's
                       evaluation style, complementing her accurate assessment of
                       requirements from the job description.
@@ -2362,7 +2421,7 @@ const handleSaveAndContinue = async () => {
                       placeholder="Enter a secret prompt (e.g. Give higher fit scores to candidates who participate in hackathons or competitions.)"
                       value={cvSecretPrompt}
                       onChange={(e) => setCvSecretPrompt(e.target.value)}
-                      style={{ minHeight: 90 }}
+                      style={{ minHeight: 80 }}
                     />
                   </div>
                 </div>
@@ -2380,15 +2439,15 @@ const handleSaveAndContinue = async () => {
                 >
                   <span
                     style={{
-                      fontSize: "16px",
-                      fontWeight: 700,
-                      lineHeight: "24px",
-                      color: "#181D27",
-                      marginLeft: "15px",
-                    }}
+                    fontSize: "16px",
+                    fontWeight: 700,
+                    lineHeight: "24px",
+                    color: "#181D27",
+                    marginLeft: "15px",
+                  }}
                   >
                     2. Pre-Screening Questions{" "}
-                    <span style={{ color: "#717680", fontWeight: 500 }}>
+                    <span style={{ color: "#717680", fontWeight: 400 }}>
                       (optional)
                     </span>
                     <span
@@ -2414,7 +2473,7 @@ const handleSaveAndContinue = async () => {
                       background: "#111827",
                       border: "none",
                       padding: "6px 12px",
-                      borderRadius: 6,
+                      borderRadius: 25,
                       cursor: "pointer",
                       marginRight: 12,
                       display: "flex",
@@ -2930,7 +2989,7 @@ const handleSaveAndContinue = async () => {
                     style={{
                       display: "flex",
                       flexDirection: "column",
-                      gap: 12,
+                      gap: 14,
                       marginTop: 24,
                       paddingTop: 24,
                       borderTop: "1px solid #E9EAEB",
@@ -2938,9 +2997,9 @@ const handleSaveAndContinue = async () => {
                   >
                     <span
                       style={{
-                        fontSize: 14,
+                        fontSize: 16,
                         fontWeight: 700,
-                        color: "#181D27",
+                        color: "#414651",
                       }}
                     >
                       Suggested Pre-screening Questions:
@@ -2956,9 +3015,6 @@ const handleSaveAndContinue = async () => {
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "space-between",
-                            border: "1px solid #E9EAEB",
-                            borderRadius: 8,
-                            padding: "12px",
                           }}
                         >
                           <div
@@ -2967,13 +3023,13 @@ const handleSaveAndContinue = async () => {
                             <span
                               style={{
                                 fontSize: 14,
-                                color: "#111827",
-                                fontWeight: 600,
+                                color: "#414651",
+                                fontWeight: 700,
                               }}
                             >
                               {s.title}
                             </span>
-                            <span style={{ fontSize: 12, color: "#717680" }}>
+                            <span style={{ fontSize: 14, fontWeight: 500, color: "#717680" }}>
                               {s.subtitle}
                             </span>
                           </div>
@@ -2983,7 +3039,7 @@ const handleSaveAndContinue = async () => {
                               background: isAdded ? "#E9EAEB" : "#fff",
                               border: "1px solid #D5D7DA",
                               padding: "6px 12px",
-                              borderRadius: 6,
+                              borderRadius: 25,
                               cursor: isAdded ? "not-allowed" : "pointer",
                               minWidth: 60,
                               fontSize: 14,
@@ -3047,15 +3103,15 @@ const handleSaveAndContinue = async () => {
                     }}
                   >
                     <span
-                      style={{
-                        fontSize: "14px",
-                        fontWeight: 700,
-                        color: "#181D27",
-                      }}
+                       style={{
+                          fontSize: "14px",
+                          fontWeight: 700,
+                          color: "#181D27",
+                        }}
                     >
                       AI Interview Screening
                     </span>
-                    <span style={{ fontSize: 12, color: "#717680" }}>
+                    <span style={{ fontSize: 16, color: "#414651" }}>
                       Jia automatically endorses candidates who meet the chosen
                       criteria.
                     </span>
@@ -3077,64 +3133,134 @@ const handleSaveAndContinue = async () => {
                       display: "flex",
                       flexDirection: "column",
                       gap: 8,
-                      borderBottom: "1px solid #E4E7EC",
-                      padding: "15px 0",
                     }}
                   >
                     <span
                       style={{
-                        fontSize: 14,
-                        fontWeight: 700,
-                        color: "#181D27",
-                      }}
+                          fontSize: "14px",
+                          fontWeight: 700,
+                          color: "#181D27",
+                        }}
                     >
                       Require Video on Interview
                     </span>
-                    <span style={{ fontSize: 12, color: "#717680" }}>
+                    <span style={{ fontSize: 16, color: "#414651" }}>
                       Require candidates to keep their camera on. Recordings
                       will appear on their analysis page.
                     </span>
-                    <div
-                      style={{ display: "flex", alignItems: "center", gap: 10 }}
-                    >
-                      <i
-                        className="la la-video"
-                        style={{ fontSize: 18, color: "#111827" }}
-                      ></i>
-                      <label className="switch">
-                        <input
-                          type="checkbox"
-                          checked={requireVideo}
-                          onChange={() => setRequireVideo(!requireVideo)}
-                        />
-                        <span className="slider round"></span>
-                      </label>
-                      <span style={{ fontSize: 12, color: "#717680" }}>
-                        {requireVideo ? "Yes" : "No"}
-                      </span>
-                    </div>
+                 <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  {/* Left Section: Icon + Text */}
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                    }}
+                  >
+                    <i className="la la-video" style={{ fontSize: 18, color: "#111827" }}></i>
+                    <span style={{ fontSize: 16, color: "#414651" }}>Require Video Interview</span>
+                  </div>
+
+                  {/* Right Section: Switch + Yes/No Label */}
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                          gap: "8px",
+                      
+                    }}
+                  >
+                    <label className="switch">
+                      <input
+                        type="checkbox"
+                        checked={requireVideo}
+                        onChange={() => setRequireVideo(!requireVideo)}
+                      />
+                      <span className="slider round"></span>
+                    </label>
+                    <span style={{ fontSize: 16, color: "#717680" , position: "relative", top: "-5px",  }}>
+                      {requireVideo ? "Yes" : "No"}
+                    </span>
+                  </div>
+                </div>
+
                   </div>
                 </div>
               </div>
 
               <div className="layered-card-middle">
+                <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
                 <span
                   style={{
-                    fontSize: "16px",
-                    fontWeight: 700,
-                    lineHeight: "24px",
-                    color: "#181D27",
-                    marginLeft: "15px",
+                   fontSize: "16px",
+                  fontWeight: 700,
+                  lineHeight: "24px",
+                  color: "#181D27",
+                  marginLeft: "15px",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "6px",
                   }}
                 >
                   2. AI Interview Questions
+                  <span
+                  style={{
+                  border: "1px solid #D5D9EB",
+                  borderRadius: "16px",
+                  padding: "2px 8px",
+                  fontSize: "14px",
+                  fontWeight: 500,
+                  lineHeight: "20px",
+                  color: "#414651",
+                }}
+                  >
+                    {questions.reduce(
+                (acc, group) => acc + group.questions.length,
+                0
+                    )}
+                  </span>
+      
                 </span>
+                  <button
+                  style={{
+                     width: "fit-content",
+                    background: "black",
+                    color: "#fff",
+                    border: "1px solid #E9EAEB",
+                    padding: "8px 16px",
+                    borderRadius: "60px",
+                    cursor: "pointer",
+                    whiteSpace: "nowrap",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                  }}
+                  onClick={() => {
+                    generateAllQuestions();
+                  }}
+                >
+                  <img
+                  src="/generate-vector.svg"
+                  alt="Generate Icon"
+                  style={{ width: "20px", height: "20px" }}
+                />
+                Generate all questions
+                        </button>
+                  </div>
                 <div className="layered-card-content">
-                  <InterviewQuestionGeneratorV2
+                 
+                   <InterviewQuestionGeneratorV2
                     questions={questions}
-                    setQuestions={(questions) => setQuestions(questions)}
+                    setQuestions={setQuestions}
                     jobTitle={jobTitle}
                     description={description}
+                    isGeneratingQuestions={isGeneratingQuestions}
                   />
                 </div>
               </div>
@@ -3202,14 +3328,14 @@ const handleSaveAndContinue = async () => {
                     <h3
                       style={{
                         fontSize: "14px",
-                        fontWeight: 600,
-                        color: "#111827",
-                        marginBottom: "4px",
+                        fontWeight: 700,
+                        color: "#181D27",
+                        marginBottom: "3px",
                       }}
                     >
                       Job Title
                     </h3>
-                    <p style={{ color: "#414651", fontSize: "16px", fontWeight: 400 ,margin: 0 }}>{jobTitle}</p>
+                    <p style={{ color: "#414651", fontSize: "16px", fontWeight: 500 ,margin: 0 }}>{jobTitle}</p>
                   </div>
 
                   {/* Employment Type */}
@@ -3217,14 +3343,14 @@ const handleSaveAndContinue = async () => {
                     <h3
                       style={{
                         fontSize: "14px",
-                        fontWeight: 600,
-                        color: "#111827",
-                        marginBottom: "4px",
+                        fontWeight: 700,
+                        color: "#181D27",
+                        marginBottom: "3px",
                       }}
                     >
                       Employment Type
                     </h3>
-                      <p style={{ color: "#414651", fontSize: "16px", fontWeight: 400, margin: 0 }}>
+                      <p style={{ color: "#414651", fontSize: "16px", fontWeight: 500 ,margin: 0 }}>
                       {employmentType}
                     </p>
                   </div>
@@ -3234,14 +3360,14 @@ const handleSaveAndContinue = async () => {
                     <h3
                       style={{
                         fontSize: "14px",
-                        fontWeight: 600,
-                        color: "#111827",
-                        marginBottom: "4px",
+                        fontWeight: 700,
+                        color: "#181D27",
+                        marginBottom: "3px",
                       }}
                     >
                       Work Arrangement
                     </h3>
-                    <p style={{ color: "#414651", fontSize: "16px", fontWeight: 400, margin: 0 }}>
+                    <p style={{ color: "#414651", fontSize: "16px", fontWeight: 500 ,margin: 0 }}>
                       {workSetup}
                     </p>
                     {workSetupRemarks && (
@@ -3262,14 +3388,14 @@ const handleSaveAndContinue = async () => {
                     <h3
                       style={{
                         fontSize: "14px",
-                        fontWeight: 600,
-                        color: "#111827",
-                        marginBottom: "4px",
+                        fontWeight: 700,
+                        color: "#181D27",
+                        marginBottom: "3px",
                       }}
                     >
                       Country
                     </h3>
-                    <p style={{ color: "#414651", fontSize: "16px", fontWeight: 400, margin: 0 }}>{country}</p>
+                    <p style={{ color: "#414651", fontSize: "16px", fontWeight: 500 ,margin: 0 }}>{country}</p>
                   </div>
 
                   {/* State / Province */}
@@ -3277,14 +3403,14 @@ const handleSaveAndContinue = async () => {
                     <h3
                       style={{
                         fontSize: "14px",
-                        fontWeight: 600,
-                        color: "#111827",
-                        marginBottom: "4px",
+                        fontWeight: 700,
+                        color: "#181D27",
+                        marginBottom: "3px",
                       }}
                     >
                       State / Province
                     </h3>
-                    <p style={{ color: "#414651", fontSize: "16px", fontWeight: 400, margin: 0 }}>{province}</p>
+                    <p style={{ color: "#414651", fontSize: "16px", fontWeight: 500 ,margin: 0 }}>{province}</p>
                   </div>
 
                   {/* City */}
@@ -3292,14 +3418,14 @@ const handleSaveAndContinue = async () => {
                     <h3
                       style={{
                         fontSize: "14px",
-                        fontWeight: 600,
-                        color: "#111827",
-                        marginBottom: "4px",
+                        fontWeight: 700,
+                        color: "#181D27",
+                        marginBottom: "3px",
                       }}
                     >
                       City
                     </h3>
-                    <p style={{ color: "#414651", fontSize: "16px", fontWeight: 400, margin: 0 }}>{city}</p>
+                    <p style={{ color: "#414651", fontSize: "16px", fontWeight: 500 ,margin: 0 }}>{city}</p>
                   </div>
 
                   {/* Minimum Salary */}
@@ -3307,14 +3433,14 @@ const handleSaveAndContinue = async () => {
                     <h3
                       style={{
                         fontSize: "14px",
-                        fontWeight: 600,
-                        color: "#111827",
-                        marginBottom: "4px",
+                        fontWeight: 700,
+                        color: "#181D27",
+                        marginBottom: "3px",
                       }}
                     >
                       Minimum Salary
                     </h3>
-                    <p style={{ color: "#414651", fontSize: "16px", fontWeight: 400, margin: 0 }}>
+                    <p style={{ color: "#414651", fontSize: "16px", fontWeight: 500 ,margin: 0 }}>
                       {salaryNegotiable || !minimumSalary
                         ? "Negotiable"
                         : `₱${Number(minimumSalary).toLocaleString()}`}
@@ -3326,14 +3452,14 @@ const handleSaveAndContinue = async () => {
                     <h3
                       style={{
                         fontSize: "14px",
-                        fontWeight: 600,
-                        color: "#111827",
-                        marginBottom: "4px",
+                        fontWeight: 700,
+                        color: "#181D27",
+                        marginBottom: "3px",
                       }}
                     >
                       Maximum Salary
                     </h3>
-                    <p style={{ color: "#414651", fontSize: "16px", fontWeight: 400, margin: 0 }}>
+                    <p style={{ color: "#414651", fontSize: "16px", fontWeight: 500 ,margin: 0 }}>
                       {salaryNegotiable || !maximumSalary
                         ? "Negotiable"
                         : `₱${Number(maximumSalary).toLocaleString()}`}
@@ -3346,9 +3472,9 @@ const handleSaveAndContinue = async () => {
                     borderBottom: "1px solid #E5E7EB" }}>
                     <h3
                       style={{
-                       fontSize: "14px",
-                        fontWeight: 600,
-                        color: "#111827",
+                        fontSize: "14px",
+                        fontWeight: 700,
+                        color: "#181D27",
                         marginBottom: "15px",
                       }}
                     >
@@ -3356,7 +3482,8 @@ const handleSaveAndContinue = async () => {
                     </h3>
                     <div
                       style={{
-                        fontSize: "14px",
+                        fontSize: "16px",
+                        fontWeight: 500,
                         color: "#414651",
                       }}
                       dangerouslySetInnerHTML={{ __html: description || "" }}
@@ -3368,9 +3495,9 @@ const handleSaveAndContinue = async () => {
                     <h3
                       style={{
                         fontSize: "14px",
-                        fontWeight: 600,
-                        color: "#111827",
-                        marginBottom: "15px",
+                        fontWeight: 700,
+                        color: "#181D27",
+                        marginBottom: "3px",
                       }}
                     >
                       Team Access
@@ -3531,7 +3658,8 @@ const handleSaveAndContinue = async () => {
 
                     <p
                       style={{
-                        fontSize: "14px",
+                          fontSize: "16px",
+                        fontWeight: 500,
                         color: "#414651",
                         display: "flex",
                         alignItems: "center",
@@ -3557,23 +3685,30 @@ const handleSaveAndContinue = async () => {
                     </p>
                   </div>
 
-               <h3
-                      style={{
+             <h3
+              style={{
                 fontSize: "14px",
-                        fontWeight: 600,
-                        color: "#111827",
+                fontWeight: 600,
+                color: "#111827",
                 marginBottom: "8px",
                 display: "flex",
                 alignItems: "center",
                 gap: "6px",
               }}
             >
-              <span style={{ fontSize: "16px" }}>✨</span> CV Secret Prompt
+              <img
+                src="/auto_awesome.svg"
+                alt="Auto Awesome Icon"
+                style={{ width: "16px", height: "16px" }}
+              />
+              CV Secret Prompt
             </h3>
+
 
             <div
               style={{
-                fontSize: "14px",
+                fontSize: "16px",
+                fontWeight: 500,
                 color: "#414651",
               }}
             >
@@ -3593,16 +3728,16 @@ const handleSaveAndContinue = async () => {
                   </div>
 
                <div>
-  <h3
-    style={{
-      fontSize: "14px",
-      fontWeight: 600,
-      color: "#111827",
-      display: "flex",
-      alignItems: "center",
-      gap: "5px",
-    }}
-  >
+          <h3
+            style={{
+              fontSize: "14px",
+              fontWeight: 600,
+              color: "#111827",
+              display: "flex",
+              alignItems: "center",
+              gap: "5px",
+            }}
+          >
     Pre-Screening Questions{" "}
     {preScreeningQuestions.length > 0 ? (
       <span
@@ -3616,7 +3751,9 @@ const handleSaveAndContinue = async () => {
     height: "24px",
     borderRadius: "50%",
     backgroundColor: "#F9FAFB",
-    border: "1px solid #E5E7EB",
+                            border: "1px solid #E5E7EB",
+                  marginLeft: "5px"
+    
   }}
 >
   {preScreeningQuestions.length}
@@ -3643,8 +3780,8 @@ const handleSaveAndContinue = async () => {
         <div key={idx} style={{ color: "#414651" }}>
           <p
             style={{
-              fontWeight: 600,
-              fontSize: "14px",
+              fontWeight: 500,
+              fontSize: "16px",
               marginBottom: "6px",
             }}
           >
@@ -3658,7 +3795,8 @@ const handleSaveAndContinue = async () => {
                 listStyleType: "disc",
                 paddingLeft: "20px",
                 margin: 0,
-                fontSize: "14px",
+                fontSize: "16px",
+              fontWeight: 500,
                 color: "#414651",
               }}
             >
@@ -3742,6 +3880,86 @@ const handleSaveAndContinue = async () => {
                   </button>
                 </div>
                 <div className="layered-card-content">
+                    <div style={{borderBottom: "1px solid #E5E7EB",   }}>
+                    <h3
+                      style={{
+                         fontSize: "14px",
+                        fontWeight: 600,
+                        color: "#111827",
+                      }}
+                    >
+                      AI Interview Settings
+                    </h3>
+                    <div
+                     
+                    >
+                      <div style={{ borderBottom: "1px solid #E5E7EB", paddingBottom: "12px" }} >
+                            <p
+                      style={{
+                          fontSize: "16px",
+                        fontWeight: 500,
+                        color: "#414651",
+                        display: "flex",
+                        alignItems: "center",
+                        flexWrap: "wrap",
+                        gap: "6px",
+                        margin: 0,
+                      }}
+                    >
+                      Automatically endorse candidates who are{" "}    <span
+                        style={{
+                          fontSize: "14px",
+                          fontWeight: 600,
+                          color: "#2563EB",
+                          backgroundColor: "#EFF6FF",
+                          border: "1px solid #BFDBFE",
+                          borderRadius: "9999px",
+                          padding: "2px 10px",
+                        }}
+                      >
+                        {screeningSetting}
+                      </span>
+                        </p>
+                        
+                      </div>
+                      <div style={{display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 0"}}>
+                        <span
+                          style={{
+                         fontSize: "14px",
+                        fontWeight: 600,
+                        color: "#111827",
+                      }}
+                        >
+                         Require Video on Interview
+                        </span>
+                       
+                        <span
+                        style={{
+                          fontSize: "16px",
+                          color: "#414651",
+                          fontWeight: 500,
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "5px",
+                        }}
+                      >
+                        {requireVideo ? (
+                          <>
+                            Yes
+                            <i className="las la-check-circle"  style={{ color: "#28a745", fontSize: "20px" }}></i>
+                          </>
+                        ) : (
+                          <>
+                            No
+                            <i className="las la-times-circle" style={{ color: "#dc3545", fontSize: "20px" }}></i>
+                          </>
+                        )}
+                      </span>
+
+                      </div>
+                    </div>
+                  </div>
+
                   <div style={{ borderBottom: "1px solid #E5E7EB", paddingBottom: "12px" }}>
                     <h3
                       style={{
@@ -3765,70 +3983,7 @@ const handleSaveAndContinue = async () => {
                       )}
                     </div>
                   </div>
-                  <div style={{borderBottom: "1px solid #E5E7EB",   }}>
-                    <h3
-                      style={{
-                         fontSize: "14px",
-                        fontWeight: 600,
-                        color: "#111827",
-                      }}
-                    >
-                      AI Interview Settings
-                    </h3>
-                    <div
-                      style={{
-                        display: "grid",
-                        gridTemplateColumns: "1fr 1fr",
-                        gap: "24px",
-                      }}
-                    >
-                      <div>
-                        <p
-                          style={{
-                            fontSize: "14px",
-                            color: "#414651",
-                            marginBottom: "3px"
-                          }}
-                        >
-                          Screening Setting
-                        </p>
-                         <span
-                        style={{
-                          fontSize: "14px",
-                          fontWeight: 600,
-                          color: "#2563EB",
-                          backgroundColor: "#EFF6FF",
-                          border: "1px solid #BFDBFE",
-                          borderRadius: "9999px",
-                          padding: "2px 10px",
-                        }}
-                      >
-                          {screeningSetting}
-                        </span>
-                      </div>
-                      <div>
-                        <p
-                          style={{
-                            fontSize: "14px",
-                            color: "#414651",
-                            marginBottom: "3px",
-                          }}
-                        >
-                          Require Video
-                        </p>
-                       
-                          <p
-                            style={{
-                              fontSize: "14px",
-                              color: "#111827",
-                              fontWeight: 500,
-                            }}
-                          >
-                            {requireVideo ? "Yes" : "No"}
-                          </p>
-                      </div>
-                    </div>
-                  </div>
+                
 
               <div>
   <h3
@@ -3842,14 +3997,18 @@ const handleSaveAndContinue = async () => {
     Interview Questions{" "}
     {questions.reduce((acc, c) => acc + c.questions.length, 0) > 0 && (
       <span
-        style={{
-          fontSize: "13px",
-          fontWeight: 500,
-          color: "#6B7280",
-          marginLeft: "4px",
-        }}
-      >
-        ({questions.reduce((acc, c) => acc + c.questions.length, 0)})
+                  style={{
+                  border: "1px solid #D5D9EB",
+                  borderRadius: "16px",
+                  padding: "2px 8px",
+                  fontSize: "14px",
+                  fontWeight: 500,
+                  lineHeight: "20px",
+                  color: "#414651",
+                  marginLeft: "5px"
+                }}
+                  >
+        {questions.reduce((acc, c) => acc + c.questions.length, 0)}
       </span>
     )}
   </h3>
@@ -3875,7 +4034,7 @@ const handleSaveAndContinue = async () => {
           <div key={category.id}>
             <p
               style={{
-                fontWeight: 600,
+                fontWeight: 700,
                 fontSize: "14px",
                 color: "#414651",
                 marginBottom: "8px",
@@ -3891,7 +4050,8 @@ const handleSaveAndContinue = async () => {
                     style={{
                       color: "#414651",
                       minWidth: "20px",
-                      fontSize: "14px",
+                      fontSize: "16px",
+                      fontWeight: 500
                     }}
                   >
                     {qi + 1}.
@@ -3899,8 +4059,8 @@ const handleSaveAndContinue = async () => {
                   <span
                     style={{
                       color: "#414651",
-                      fontSize: "14px",
-                      lineHeight: "1.6",
+                       fontSize: "16px",
+                      fontWeight: 500
                     }}
                   >
                     {typeof q === "string" ? q : (q as any)?.question}
@@ -3942,18 +4102,18 @@ const handleSaveAndContinue = async () => {
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  gap: "8px",
-                  fontSize: "16px",
+                  gap: "5px",
+                  fontSize: "14px",
                   fontWeight: 700,
-                  lineHeight: "24px",
                   color: "#181D27",
                   marginLeft: "15px",
                 }}
               >
-                <i
-                  className="las la-lightbulb"
-                  style={{ color: "#FFB6C1", fontSize: 20 }}
-                ></i>
+               
+                <img
+                src="/tips-vector.svg"
+                alt="Tips icon"
+              />
                 Tips
               </span>
             </div>

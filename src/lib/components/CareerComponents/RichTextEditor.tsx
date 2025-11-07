@@ -2,7 +2,7 @@
 
 import React, { useRef, useEffect } from "react";
 
-export default function RichTextEditor({setText, text}) {
+export default function RichTextEditor({setText, text,  placeholder = "Enter description"}) {
     const descriptionEditorRef = useRef(null);
 
     const formatText = (command, value = null) => {
@@ -80,7 +80,7 @@ export default function RichTextEditor({setText, text}) {
           onInput={handleDescriptionChange}
           onBlur={handleDescriptionChange}
           onPaste={handlePaste}
-          data-placeholder="Enter description"
+          data-placeholder={placeholder}
         ></div>
         {/* Rich Text Editor Toolbar */}
         <div style={{ 

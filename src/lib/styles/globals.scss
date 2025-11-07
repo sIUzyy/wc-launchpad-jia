@@ -2,6 +2,18 @@
   background-color: #f8f9fa !important;
 }
 
+/* Hide the arrows in Chrome, Safari, Edge, and Opera */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Hide the arrows in Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
 .sidenav-header {
   display: flex;
   justify-content: center;
