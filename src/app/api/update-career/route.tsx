@@ -17,7 +17,7 @@ export async function POST(request: Request) {
 
     const { db } = await connectMongoDB();
 
-    let dataUpdates = { ...requestData };
+   let dataUpdates = { ...requestData, updatedAt: new Date(), lastActivityAt: new Date() };
 
     delete dataUpdates._id;
 
@@ -25,9 +25,7 @@ export async function POST(request: Request) {
       ...dataUpdates,
     };
 
-    await db
-      .collection("careers")
-      .updateOne({ _id: new ObjectId(_id) }, { $set: career });
+    await db.collection("careers").updateOne({ _id: new ObjectId(_id) }, { $set: dataUpdates });
 
     return NextResponse.json({
       message: "Career updated successfully",

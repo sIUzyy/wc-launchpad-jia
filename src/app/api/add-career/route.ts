@@ -24,6 +24,7 @@ export async function POST(request: Request) {
       country,
       province,
       employmentType,
+      lastStep, 
     } = await request.json();
     // Validate required fields
     if (!jobTitle || !description || !questions || !location || !workSetup) {
@@ -101,14 +102,20 @@ export async function POST(request: Request) {
       country,
       province,
       employmentType,
+      lastStep,
     };
 
-    await db.collection("careers").insertOne(career);
+    const result = await db.collection("careers").insertOne(career);
+
+    // return NextResponse.json({
+    //   message: "Career added successfully",
+    //   career,
+    // });
 
     return NextResponse.json({
-      message: "Career added successfully",
-      career,
-    });
+  message: "Career added successfully",
+  career: { ...career, _id: result.insertedId },
+});
   } catch (error) {
     console.error("Error adding career:", error);
     return NextResponse.json(
