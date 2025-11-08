@@ -14,6 +14,112 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
+/* siuzy css changes */
+
+/* career-form */
+
+.career-form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.career-form-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #181D27;
+  margin-left: 15px;
+}
+
+.career-form-label { 
+  font-size: 14px;
+  font-weight: 700;
+  color: #181D27;
+}
+
+.career-form-label-description {
+  font-size: 16px;
+  color: #414651;
+}
+
+.career-form-input-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #414651;
+}
+
+.career-form-info-label {
+  color: #414651;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.career-form-optional-text {
+  font-weight: 400;
+  color: #717680;
+}
+
+.career-form-img {
+  width: 20px;
+  height: 20px;
+}
+
+.career-form-data-length {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px;
+  font-size: 12px;
+  color: #717680;
+  border: 1px solid #E9EAEB;
+  border-radius: 999px;
+  padding: 2px 8px;
+}
+
+.career-form-no-data {
+  font-size: 14px;
+  color: #414651;
+}
+
+.career-form-generate-btn {
+  width: fit-content;
+  background: black;
+  color: #fff;
+  border: 1px solid #E9EAEB;
+  padding: 8px 16px;
+  border-radius: 60px;
+  cursor: pointer;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.career-form-edit-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #f8f9fb;
+  border: 1px solid #e5e7eb;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-right: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.career-form-input-error {
+  font-size: 14px;
+  font-weight: 500;
+  color: #F04438;
+}
+
+/* siuzy css changes end */
+ 
+
+
 .sidenav-header {
   display: flex;
   justify-content: center;
@@ -221,10 +327,13 @@ td {
 }
 
 .form-control {
+  background-color: #ffffff !important;
   border: 1px solid #e9eaeb !important;
-  border-radius: 5px !important;
-  color: #333 !important;
+  border-radius: 8px !important;
+  color: #333333 !important;
   font-size: 1rem !important;
+  box-shadow: 0 2px 3px rgba(10, 13, 18, 0.05), 0 1px 0 rgba(10, 13, 18, 0.03) !important;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
 
   &::placeholder {
     color: #333333af !important;
@@ -232,9 +341,17 @@ td {
 
   &:focus {
     border: 2px solid #5e39d6 !important;
-    box-shadow: none !important;
+    box-shadow: 0 3px 6px rgba(94, 57, 214, 0.15), 0 2px 2px rgba(94, 57, 214, 0.1) !important;
+    outline: none !important;
+  }
+
+  &.error {
+    border: 2px solid #dc2626 !important;
+    box-shadow: 0 3px 6px rgba(220, 38, 38, 0.1), 0 2px 2px rgba(220, 38, 38, 0.08) !important;
   }
 }
+
+
 
 select.form-control {
   background-color: #fff !important;
@@ -816,18 +933,26 @@ th[scope="col"] {
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  background: #fff;
-  border: 1px solid #ddd;
+  background: #ffffff;
+  border: 1px solid #e9eaeb;
   padding: 10px 5px;
   border-radius: 8px;
-  transition: 0.3s;
+ box-shadow: 0 2px 3px rgba(10, 13, 18, 0.05), 0 1px 0 rgba(10, 13, 18, 0.03) !important;
+  transition: all 0.2s ease;
   cursor: pointer;
 
   &:hover {
     background: #f8f9fa;
-    border-color: #ddd;
+    border-color: #d5d7da;
+    box-shadow: 0 2px 3px rgba(10, 13, 18, 0.1);
+  }
+
+  &:active {
+    box-shadow: 0 0 0 2px rgba(94, 57, 214, 0.15);
+    border-color: #5e39d6;
   }
 }
+
 
 .dropdown-item {
   border-radius: 0px !important;

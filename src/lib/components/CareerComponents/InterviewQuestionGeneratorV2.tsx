@@ -632,6 +632,11 @@ export default function (props) {
                             cursor: "pointer",
                             width: "82px",
                             height: "36px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: "6px",
+                            marginLeft: "5px"
                           }}
                           onClick={() => {
                             setShowQuestionModal("edit");
@@ -639,8 +644,12 @@ export default function (props) {
                             setQuestionModalQuestion(question);
                           }}
                         >
-                          <i className="la la-pencil-alt"></i>
-                          <span>Edit</span>
+                         <img 
+                            src="/pencil-edit-2.svg" 
+                            alt="Edit" 
+                            className="career-form-img"
+                          />
+                          <span style={{fontSize: "14px", fontWeight: 700, color: "#414651" }}>Edit</span>
                         </button>
 
                         <button
@@ -719,7 +728,7 @@ export default function (props) {
                         whiteSpace: "nowrap",
                         display: "flex",            
                         alignItems: "center",       
-                        gap: "8px",                 
+                        gap: "5px",                 
                         }}
                         onClick={() => {
                           setShowQuestionModal("add");
@@ -730,7 +739,7 @@ export default function (props) {
                           className="la la-plus-circle"
                           style={{ fontSize: 20 }}
                         ></i>{" "}
-                        <span style={{ position: "relative", top: "-1px" }}>Manually Add</span>
+                        <span style={{ position: "relative", top: "-1px", color: "#414651", fontSize: "14px", fontWeight: 700 }}>Manually add</span>
                       </button>
                     </div>
                     {group.questions.length > 0 && (
@@ -745,9 +754,12 @@ export default function (props) {
                             marginRight: "10px",
                             marginTop: "10px",
                             paddingTop: "5px",
+                            color: "#717680",
+                            fontSize: "14px",
+                            fontWeight: 500
                           }}
                         >
-                          # of Questions to Ask:
+                          # of questions to ask
                         </p>
                         <input
                           type="number"
@@ -763,6 +775,13 @@ export default function (props) {
                           style={{
                             maxWidth: "40px",
                             maxHeight: "40px",
+                            border: "1px solid #E9EAEB",
+                            borderRadius: "5px",
+                            cursor: "pointer",
+                            width: "82px",
+                            height: "36px",
+                            paddingLeft: "8px",
+                            boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
                           }}
                           onChange={(e) => {
                             let value = parseInt(e.target.value);

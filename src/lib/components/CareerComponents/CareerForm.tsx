@@ -743,7 +743,7 @@ const handleSaveAndContinue = async () => {
           <h1 style={{ fontSize: "24px", fontWeight: 550, color: "#111827" }}>
             {jobTitle && currentStep > 1 ? (
               <>
-                <span style={{ color: "#717680", fontWeight: 400 }}>
+                <span style={{ color: "#717680", fontWeight: 700 }}>
                   [Draft]{" "}
                 </span>
                 {jobTitle}
@@ -1055,48 +1055,18 @@ const handleSaveAndContinue = async () => {
           {currentStep === 1 && (
             <>
               {/* career-information section*/}
-              <div className="">
                 <div className="layered-card-middle">
-                  <span
-                    style={{
-                      fontSize: "16px",
-                      fontWeight: 700,
-                      lineHeight: "24px",
-                      color: "#181D27",
-                      marginLeft: "15px",
-                    }}
-                  >
-                    1. Career Information
-                  </span>
+                  <span className="career-form-title">1. Career Information</span>
                   <div className="layered-card-content">
 
                     {/* basic-information section*/}
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: 5,
-                        marginBottom: 10,
-                      }}
-                    >
-                      <span
-                        style={{
-                          fontSize: "14px",
-                          fontWeight: 700,
-                          color: "#181D27",
-                        }}
-                      >
+                    <div className="career-form-section">
+                      <span className="career-form-label">
                         Basic Information
                       </span>
 
                       {/* job title - label */}
-                      <span
-                        style={{
-                          fontSize: "14px",
-                          fontWeight: 500,
-                          color: "#414651",
-                        }}
-                      >
+                      <span className="career-form-input-label">
                         Job Title
                       </span>
 
@@ -1116,9 +1086,7 @@ const handleSaveAndContinue = async () => {
                             }
                           }}
                           style={{
-                            borderColor: step1Errors.jobTitle
-                              ? "#DC2626"
-                              : undefined,
+                            border: step1Errors.jobTitle ? "1px solid #DC2626" : undefined,
                           }}
                         ></input>
                         {step1Errors.jobTitle && (
@@ -1138,13 +1106,7 @@ const handleSaveAndContinue = async () => {
 
                       {/* job title - error */}
                       {step1Errors.jobTitle && (
-                        <span
-                          style={{
-                            fontSize: "12px",
-                            color: "#DC2626",
-                            lineHeight: "18px",
-                          }}
-                        >
+                        <span className="career-form-input-error">
                           This is a required field.
                         </span>
                       )}
@@ -1152,22 +1114,9 @@ const handleSaveAndContinue = async () => {
                     {/* end of basic-information section*/}
 
                     {/* work-setting section*/}
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: 5,
-                        marginBottom: 10,
-                      }}
-                    >
+                    <div className="career-form-section">
                       {/* work-setting section*/}
-                      <span
-                        style={{
-                          fontSize: "14px",
-                          fontWeight: 700,
-                          color: "#181D27",
-                        }}
-                      >
+                      <span className="career-form-label">
                         Work Setting
                       </span>
 
@@ -1181,13 +1130,7 @@ const handleSaveAndContinue = async () => {
                       >
                         {/* employment type */}
                         <div style={{ width: "50%" }}>
-                          <span
-                            style={{
-                          fontSize: "14px",
-                          fontWeight: 500,
-                          color: "#414651",
-                        }}
-                          >
+                           <span className="career-form-input-label">
                             Employment Type
                           </span>
                           {/* employment type - dropdown */}
@@ -1210,15 +1153,7 @@ const handleSaveAndContinue = async () => {
                           />
                           {/* employment type - error */}
                           {step1Errors.employmentType && (
-                            <span
-                              style={{
-                                fontSize: "12px",
-                                color: "#DC2626",
-                                lineHeight: "18px",
-                                marginTop: 4,
-                                display: "block",
-                              }}
-                            >
+                           <span className="career-form-input-error">
                               This is a required field.
                             </span>
                           )}
@@ -1226,13 +1161,7 @@ const handleSaveAndContinue = async () => {
                         {/* arrangement */}
                         <div style={{ width: "50%" }}>
                           {/* arrangement - label */}
-                          <span
-                            style={{
-                          fontSize: "14px",
-                          fontWeight: 500,
-                          color: "#414651",
-                        }}
-                          >
+                         <span className="career-form-input-label">
                             Arrangement
                           </span>
                           {/* arrangement - dropdown */}
@@ -1252,15 +1181,7 @@ const handleSaveAndContinue = async () => {
                           />
                           {/* arrangement - error */}
                           {step1Errors.workSetup && (
-                            <span
-                              style={{
-                                fontSize: "12px",
-                                color: "#DC2626",
-                                lineHeight: "18px",
-                                marginTop: 4,
-                                display: "block",
-                              }}
-                            >
+                           <span className="career-form-input-error">
                               This is a required field.
                             </span>
                           )}
@@ -1270,22 +1191,9 @@ const handleSaveAndContinue = async () => {
                     {/* end of work-setting section*/}
 
                     {/* location section*/}
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: 5,
-                        marginBottom: 10,
-                      }}
-                    >
+                    <div className="career-form-section">
                       {/* location section*/}
-                      <span
-                       style={{
-                          fontSize: "14px",
-                          fontWeight: 700,
-                          color: "#181D27",
-                        }}
-                      >
+                     <span className="career-form-label">
                         Location
                       </span>
 
@@ -1300,13 +1208,7 @@ const handleSaveAndContinue = async () => {
                         {/* country */}
                         <div style={{ width: "100%" }}>
                           {/* country - label */}
-                          <span
-                             style={{
-                          fontSize: "14px",
-                          fontWeight: 500,
-                          color: "#414651",
-                        }}
-                          >
+                          <span className="career-form-input-label">
                             Country
                           </span>
                           {/* country - dropdown */}
@@ -1323,13 +1225,7 @@ const handleSaveAndContinue = async () => {
                         <div style={{ width: "100%" }}>
 
                           {/* state / province - label */}
-                          <span
-                            style={{
-                          fontSize: "14px",
-                          fontWeight: 500,
-                          color: "#414651",
-                        }}
-                          >
+                         <span className="career-form-input-label">
                             State / Province
                           </span>
                           {/* state / province - dropdown */}
@@ -1368,15 +1264,7 @@ const handleSaveAndContinue = async () => {
                           />
                           {/* state / province - error */}
                           {step1Errors.province && (
-                            <span
-                              style={{
-                                fontSize: "12px",
-                                color: "#DC2626",
-                                lineHeight: "18px",
-                                marginTop: 4,
-                                display: "block",
-                              }}
-                            >
+                           <span className="career-form-input-error">
                               This is a required field.
                             </span>
                           )}
@@ -1384,13 +1272,7 @@ const handleSaveAndContinue = async () => {
                         {/* city */}
                         <div style={{ width: "100%" }}>
                           {/* city - label */}
-                          <span
-                            style={{
-                          fontSize: "14px",
-                          fontWeight: 500,
-                          color: "#414651",
-                        }}
-                          >
+                          <span className="career-form-input-label">
                             City
                           </span>
                           {/* city - dropdown */}
@@ -1407,15 +1289,7 @@ const handleSaveAndContinue = async () => {
                           />
                           {/* city - error */}
                           {step1Errors.city && (
-                            <span
-                              style={{
-                                fontSize: "12px",
-                                color: "#DC2626",
-                                lineHeight: "18px",
-                                marginTop: 4,
-                                display: "block",
-                              }}
-                            >
+                           <span className="career-form-input-error">
                               This is a required field.
                             </span>
                           )}
@@ -1424,13 +1298,7 @@ const handleSaveAndContinue = async () => {
                     </div>
 
                     {/* salary section*/}
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        marginBottom: 10,
-                      }}
-                    >
+                    <div className="career-form-section">
                       {/* salary section*/}
                       <div
                         style={{
@@ -1440,13 +1308,7 @@ const handleSaveAndContinue = async () => {
                         }}
                       >
                         {/* salary section - label*/}
-                        <span
-                         style={{
-                          fontSize: "14px",
-                          fontWeight: 700,
-                          color: "#181D27",
-                        }}
-                        >
+                         <span className="career-form-label">
                           Salary
                         </span>
 
@@ -1501,13 +1363,7 @@ const handleSaveAndContinue = async () => {
                         {/* minimum salary */}
                         <div style={{ flex: 1 }}>
                           {/* minimum salary - label */}
-                          <span
-                            style={{
-                          fontSize: "14px",
-                          fontWeight: 500,
-                          color: "#414651",
-                        }}
-                          >
+                          <span className="career-form-input-label">
                             Minimum Salary
                           </span>
                           {/* minimum salary - input */}
@@ -1586,15 +1442,7 @@ const handleSaveAndContinue = async () => {
                           </div>
                           {/* minimum salary - error */}
                           {step1Errors.minimumSalary && (
-                            <span
-                              style={{
-                                fontSize: "12px",
-                                color: "#DC2626",
-                                lineHeight: "18px",
-                                marginTop: 4,
-                                display: "block",
-                              }}
-                            >
+                           <span className="career-form-input-error">
                               This is a required field.
                             </span>
                           )}
@@ -1603,13 +1451,7 @@ const handleSaveAndContinue = async () => {
                         {/* maximum salary */}
                         <div style={{ flex: 1 }}>
                           {/* maximum salary - label */}
-                          <span
-                             style={{
-                          fontSize: "14px",
-                          fontWeight: 500,
-                          color: "#414651",
-                        }}
-                          >
+                          <span className="career-form-input-label">
                             Maximum Salary
                           </span>
                           {/* maximum salary - input */}
@@ -1688,15 +1530,7 @@ const handleSaveAndContinue = async () => {
                           </div>
                           {/* maximum salary - error */}
                           {step1Errors.maximumSalary && (
-                            <span
-                              style={{
-                                fontSize: "12px",
-                                color: "#DC2626",
-                                lineHeight: "18px",
-                                marginTop: 4,
-                                display: "block",
-                              }}
-                            >
+                           <span className="career-form-input-error">
                               This is a required field.
                             </span>
                           )}
@@ -1705,20 +1539,9 @@ const handleSaveAndContinue = async () => {
                     </div>
                   </div>
                 </div>
-              </div>
 
               <div className="layered-card-middle">
-                <span
-                  style={{
-                    fontSize: "16px",
-                    fontWeight: 700,
-                    lineHeight: "24px",
-                    color: "#181D27",
-                    marginLeft: "15px",
-                  }}
-                >
-                  2. Job Description
-                </span>
+                <span className="career-form-title">2. Job Description</span>
                 <div className="layered-card-content">
                   <RichTextEditor
                     setText={(text) => {
@@ -1732,33 +1555,15 @@ const handleSaveAndContinue = async () => {
                     
                   />
                   {step1Errors.description && (
-                    <span
-                      style={{
-                        fontSize: "12px",
-                        color: "#DC2626",
-                        lineHeight: "18px",
-                        marginTop: 8,
-                        display: "block",
-                      }}
-                    >
+                    <span className="career-form-input-error">
                       This is a required field.
                     </span>
                   )}
                 </div>
               </div>
 
-              <div className="layered-card-middle">
-                <span
-                  style={{
-                    fontSize: "16px",
-                    fontWeight: 700,
-                    lineHeight: "24px",
-                    color: "#181D27",
-                    marginLeft: "15px",
-                  }}
-                >
-                  3. Team Access
-                </span>
+              <div style={{marginBottom: "20px"}} className="layered-card-middle">
+                <span className="career-form-title">3. Team Access</span>
                 <div className="layered-card-content">
                   <div
                     style={{
@@ -1774,24 +1579,10 @@ const handleSaveAndContinue = async () => {
                         gap: 8,
                       }}
                     >
-                      <span
-                        style={{
-                          fontSize: "14px",
-                          fontWeight: 700,
-                          lineHeight: "20px",
-                          color: "#181D27",
-                        }}
-                      >
+                      <span className="career-form-label">
                         Add more members
                       </span>
-                      <span
-                        style={{
-                          fontWeight: 500,
-                          fontSize: "12px",
-                          lineHeight: "18px",
-                          color: "#717680",
-                        }}
-                      >
+                      <span className="career-form-label-description">
                         You can add other members to collaborate on this career
                       </span>
                       {/* Member Dropdown */}
@@ -2026,7 +1817,6 @@ const handleSaveAndContinue = async () => {
                         display: "flex",
                         flexDirection: "column",
                         gap: 8,
-                        marginTop: 8,
                       }}
                     >
                       <div
@@ -2034,9 +1824,6 @@ const handleSaveAndContinue = async () => {
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "space-between",
-                          padding: "12px",
-                          border: "1px solid #E9EAEB",
-                          borderRadius: 8,
                         }}
                       >
                         <div
@@ -2352,45 +2139,30 @@ const handleSaveAndContinue = async () => {
                       ))}
                     </div>
 
-                    {/* Admin Disclaimer */}
-                    <div
-                      style={{
-                        marginTop: 8,
-                        paddingTop: 12,
-                        borderTop: "1px solid #E9EAEB",
-                      }}
-                    >
+                    {/* admin disclaimer */}
                       <span
                         style={{
                           fontSize: 12,
-                          fontStyle: "italic",
+                          fontWeight: 500,
                           color: "#717680",
                         }}
                       >
                         *Admins can view all careers regardless of specific
                         access settings.
                       </span>
-                    </div>
                   </div>
                 </div>
               </div>
             </>
           )}
+           {/* end of currentStep === 1*/}
 
           {/* 2. CV review & pre-screening*/}
           {currentStep === 2 && (
             <>
               {/* cv review settings */}
               <div className="layered-card-middle">
-                <span
-                  style={{
-                    fontSize: "16px",
-                    fontWeight: 700,
-                    lineHeight: "24px",
-                    color: "#181D27",
-                    marginLeft: "15px",
-                  }}
-                >
+                <span className="career-form-title">
                   1. CV Review Settings
                 </span>
                 <div className="layered-card-content">
@@ -2403,16 +2175,10 @@ const handleSaveAndContinue = async () => {
                       paddingBottom: 15,
                     }}
                   >
-                    <span
-                      style={{
-                          fontSize: "14px",
-                          fontWeight: 700,
-                          color: "#181D27",
-                        }}
-                    >
+                    <span className="career-form-label">
                       CV Screening
                     </span>
-                    <span style={{ fontSize: 16, color: "#414651" }}>
+                    <span className="career-form-label-description">
                       Jia automatically endorses candidates who meet the chosen
                       criteria.
                     </span>
@@ -2436,26 +2202,24 @@ const handleSaveAndContinue = async () => {
                       marginTop: 12,
                     }}
                   >
-                   <span
-  style={{
-    fontSize: "14px",
-    fontWeight: 700,
-    color: "#181D27",
-    display: "inline-flex",
-    alignItems: "center",
-    gap: "6px",
-  }}
->
-  <img
-    src="/auto_awesome.svg"
-    alt="Auto Awesome Icon"
-    style={{ width: "16px", height: "16px" }}
-  />
-  CV Secret Prompt{" "}
-  <span style={{ color: "#717680", fontWeight: 400 }}>(optional)</span>
-</span>
+                    <span
+                      className="career-form-label"
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "6px",
+                      }}
+                    >
+                      <img
+                        src="/auto_awesome.svg"
+                        alt="Auto Awesome Icon"
+                        className="career-form-img"
+                      />
+                      CV Secret Prompt{" "}
+                      <span className="career-form-optional-text">(optional)</span>
+                    </span>
 
-                    <span style={{ fontSize: 16, color: "#414651" }}>
+                    <span className="career-form-label-description">
                       Secret Prompts give you extra control over Jia's
                       evaluation style, complementing her accurate assessment of
                       requirements from the job description.
@@ -2465,14 +2229,14 @@ const handleSaveAndContinue = async () => {
                       placeholder="Enter a secret prompt (e.g. Give higher fit scores to candidates who participate in hackathons or competitions.)"
                       value={cvSecretPrompt}
                       onChange={(e) => setCvSecretPrompt(e.target.value)}
-                      style={{ minHeight: 80 }}
+                      style={{ maxHeight: 200, resize: "none" }}
                     />
                   </div>
                 </div>
               </div>
 
               {/* pre-screening questions */}
-              <div className="layered-card-middle">
+              <div style={{marginBottom: "20px"}} className="layered-card-middle">
                 <div
                   style={{
                     display: "flex",
@@ -2481,32 +2245,12 @@ const handleSaveAndContinue = async () => {
                     justifyContent: "space-between",
                   }}
                 >
-                  <span
-                    style={{
-                    fontSize: "16px",
-                    fontWeight: 700,
-                    lineHeight: "24px",
-                    color: "#181D27",
-                    marginLeft: "15px",
-                  }}
-                  >
+                  <span className="career-form-title">
                     2. Pre-Screening Questions{" "}
-                    <span style={{ color: "#717680", fontWeight: 400 }}>
+                    <span className="career-form-optional-text">
                       (optional)
                     </span>
-                    <span
-                      style={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        marginLeft: 8,
-                        fontSize: 12,
-                        color: "#717680",
-                        border: "1px solid #E9EAEB",
-                        borderRadius: 999,
-                        padding: "2px 8px",
-                      }}
-                    >
+                    <span className="career-form-data-length">
                       {preScreeningQuestions.length}
                     </span>
                   </span>
@@ -2543,16 +2287,7 @@ const handleSaveAndContinue = async () => {
                 </div>
                 <div className="layered-card-content">
                   {preScreeningQuestions.length === 0 && (
-                    <div
-                      style={{
-                        textAlign: "center",
-                        padding: 24,
-                        color: "#717680",
-                        fontSize: 14,
-                      }}
-                    >
-                      No pre-screening questions added yet.
-                    </div>
+                    <span className="career-form-no-data">No pre-screening questions added yet.</span>
                   )}
 
                   {preScreeningQuestions.length > 0 && (
@@ -2561,7 +2296,6 @@ const handleSaveAndContinue = async () => {
                         display: "flex",
                         flexDirection: "column",
                         gap: 16,
-                        marginBottom: 24,
                       }}
                     >
                       {preScreeningQuestions.map((q, qIndex) => {
@@ -3124,17 +2858,7 @@ const handleSaveAndContinue = async () => {
           {currentStep === 3 && (
             <>
               <div className="layered-card-middle">
-                <span
-                  style={{
-                    fontSize: "16px",
-                    fontWeight: 700,
-                    lineHeight: "24px",
-                    color: "#181D27",
-                    marginLeft: "15px",
-                  }}
-                >
-                  1. AI Interview Settings
-                </span>
+                <span className="career-form-title">1. AI Interview Settings</span>
                 <div className="layered-card-content">
                   {/* AI Interview Screening */}
                   <div
@@ -3146,16 +2870,10 @@ const handleSaveAndContinue = async () => {
                       paddingBottom: 15,
                     }}
                   >
-                    <span
-                       style={{
-                          fontSize: "14px",
-                          fontWeight: 700,
-                          color: "#181D27",
-                        }}
-                    >
+                    <span className="career-form-label">
                       AI Interview Screening
                     </span>
-                    <span style={{ fontSize: 16, color: "#414651" }}>
+                    <span className="career-form-label-description">
                       Jia automatically endorses candidates who meet the chosen
                       criteria.
                     </span>
@@ -3179,16 +2897,10 @@ const handleSaveAndContinue = async () => {
                       gap: 8,
                     }}
                   >
-                    <span
-                      style={{
-                          fontSize: "14px",
-                          fontWeight: 700,
-                          color: "#181D27",
-                        }}
-                    >
+                   <span className="career-form-label">
                       Require Video on Interview
                     </span>
-                    <span style={{ fontSize: 16, color: "#414651" }}>
+                    <span className="career-form-label-description">
                       Require candidates to keep their camera on. Recordings
                       will appear on their analysis page.
                     </span>
@@ -3207,7 +2919,7 @@ const handleSaveAndContinue = async () => {
                       gap: "8px",
                     }}
                   >
-                    <i className="la la-video" style={{ fontSize: 18, color: "#111827" }}></i>
+                    <i className="la la-video" style={{ fontSize: 20, color: "#111827" }}></i>
                     <span style={{ fontSize: 16, color: "#414651" }}>Require Video Interview</span>
                   </div>
 
@@ -3216,8 +2928,7 @@ const handleSaveAndContinue = async () => {
                     style={{
                       display: "flex",
                       alignItems: "center",
-                          gap: "8px",
-                      
+                      gap: "8px", 
                     }}
                   >
                     <label className="switch">
@@ -3238,67 +2949,37 @@ const handleSaveAndContinue = async () => {
                 </div>
               </div>
 
-              <div className="layered-card-middle">
+              <div style={{marginBottom: "20px"}} className="layered-card-middle">
                 <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
-                <span
-                  style={{
-                   fontSize: "16px",
-                  fontWeight: 700,
-                  lineHeight: "24px",
-                  color: "#181D27",
-                  marginLeft: "15px",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "6px",
-                  }}
-                >
-                  2. AI Interview Questions
                   <span
-                  style={{
-                  border: "1px solid #D5D9EB",
-                  borderRadius: "16px",
-                  padding: "2px 8px",
-                  fontSize: "14px",
-                  fontWeight: 500,
-                  lineHeight: "20px",
-                  color: "#414651",
-                }}
+                    className="career-form-title"
+                    style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    }}
                   >
-                    {questions.reduce(
-                (acc, group) => acc + group.questions.length,
-                0
-                    )}
+                  2. AI Interview Questions
+                  <span className="career-form-data-length">
+                    {questions.reduce((acc, group) => acc + group.questions.length, 0)}
                   </span>
       
                 </span>
                   <button
-                  style={{
-                     width: "fit-content",
-                    background: "black",
-                    color: "#fff",
-                    border: "1px solid #E9EAEB",
-                    padding: "8px 16px",
-                    borderRadius: "60px",
-                    cursor: "pointer",
-                    whiteSpace: "nowrap",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                  }}
-                  onClick={() => {
+                    className="career-form-generate-btn"
+                    onClick={() => {
                     generateAllQuestions();
                   }}
                 >
                   <img
-                  src="/generate-vector.svg"
-                  alt="Generate Icon"
-                  style={{ width: "20px", height: "20px" }}
-                />
-                Generate all questions
-                        </button>
+                    src="/generate-vector.svg"
+                    alt="Generate Icon"
+                    className="career-form-img"
+                  />
+                   Generate all questions
+                    </button>
                   </div>
                 <div className="layered-card-content">
-                 
                    <InterviewQuestionGeneratorV2
                     questions={questions}
                     setQuestions={setQuestions}
@@ -3322,36 +3003,18 @@ const handleSaveAndContinue = async () => {
                     justifyContent: "space-between",
                   }}
                 >
-                  <span
-                    style={{
-                      fontSize: "20px",
-                      fontWeight: 700,
-                      color: "#111827",
-                      marginLeft: "15px",
-                    }}
-                  >
+                  <span className="career-form-title">
                     Career Details & Team Access
                   </span>
                  <button
-                  style={{
-                    width: "30px",
-                    height: "30px",
-                    borderRadius: "50%",
-                    backgroundColor: "#f8f9fb",
-                    border: "1px solid #e5e7eb",
-                    cursor: "pointer",
-                    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
-                    marginRight: '15px'
-                  }}
+                  className="career-form-edit-btn"
                   onClick={() => setCurrentStep(1)}
                 >
-                  <i
-                    className="las la-pen"
-                    style={{
-                      fontSize: "18px",
-                      color: "#6b7280",
-                    }}
-                  ></i>
+                  <img
+                  src="/pencil-edit-2.svg"
+                  alt="Edit"
+                  style={{width: "16px", height: "16px"}}
+                  />
                 </button>
 
                 </div>
@@ -3369,49 +3032,28 @@ const handleSaveAndContinue = async () => {
                 >
                   {/* Job Title */}
                   <div style={{ gridColumn: "1 / -1" }}>
-                    <h3
-                      style={{
-                        fontSize: "14px",
-                        fontWeight: 700,
-                        color: "#181D27",
-                        marginBottom: "3px",
-                      }}
-                    >
+                    <h3 className="career-form-label">
                       Job Title
                     </h3>
-                    <p style={{ color: "#414651", fontSize: "16px", fontWeight: 500 ,margin: 0 }}>{jobTitle}</p>
+                    <p className="career-form-info-label">{jobTitle}</p>
                   </div>
 
                   {/* Employment Type */}
                   <div>
-                    <h3
-                      style={{
-                        fontSize: "14px",
-                        fontWeight: 700,
-                        color: "#181D27",
-                        marginBottom: "3px",
-                      }}
-                    >
+                    <h3 className="career-form-label">
                       Employment Type
                     </h3>
-                      <p style={{ color: "#414651", fontSize: "16px", fontWeight: 500 ,margin: 0 }}>
+                     <p className="career-form-info-label">
                       {employmentType}
                     </p>
                   </div>
 
                   {/* Work Arrangement */}
                   <div>
-                    <h3
-                      style={{
-                        fontSize: "14px",
-                        fontWeight: 700,
-                        color: "#181D27",
-                        marginBottom: "3px",
-                      }}
-                    >
+                     <h3 className="career-form-label">
                       Work Arrangement
                     </h3>
-                    <p style={{ color: "#414651", fontSize: "16px", fontWeight: 500 ,margin: 0 }}>
+                   <p className="career-form-info-label">
                       {workSetup}
                     </p>
                     {workSetupRemarks && (
@@ -3429,62 +3071,34 @@ const handleSaveAndContinue = async () => {
 
                   {/* Country */}
                   <div>
-                    <h3
-                      style={{
-                        fontSize: "14px",
-                        fontWeight: 700,
-                        color: "#181D27",
-                        marginBottom: "3px",
-                      }}
-                    >
+                     <h3 className="career-form-label">
                       Country
                     </h3>
-                    <p style={{ color: "#414651", fontSize: "16px", fontWeight: 500 ,margin: 0 }}>{country}</p>
+                   <p className="career-form-info-label">{country}</p>
                   </div>
 
                   {/* State / Province */}
                   <div>
-                    <h3
-                      style={{
-                        fontSize: "14px",
-                        fontWeight: 700,
-                        color: "#181D27",
-                        marginBottom: "3px",
-                      }}
-                    >
+                     <h3 className="career-form-label">
                       State / Province
                     </h3>
-                    <p style={{ color: "#414651", fontSize: "16px", fontWeight: 500 ,margin: 0 }}>{province}</p>
+                    <p className="career-form-info-label">{province}</p>
                   </div>
 
                   {/* City */}
                   <div>
-                    <h3
-                      style={{
-                        fontSize: "14px",
-                        fontWeight: 700,
-                        color: "#181D27",
-                        marginBottom: "3px",
-                      }}
-                    >
+                     <h3 className="career-form-label">
                       City
                     </h3>
-                    <p style={{ color: "#414651", fontSize: "16px", fontWeight: 500 ,margin: 0 }}>{city}</p>
+                    <p className="career-form-info-label">{city}</p>
                   </div>
 
                   {/* Minimum Salary */}
                   <div>
-                    <h3
-                      style={{
-                        fontSize: "14px",
-                        fontWeight: 700,
-                        color: "#181D27",
-                        marginBottom: "3px",
-                      }}
-                    >
+                    <h3 className="career-form-label">
                       Minimum Salary
                     </h3>
-                    <p style={{ color: "#414651", fontSize: "16px", fontWeight: 500 ,margin: 0 }}>
+                    <p className="career-form-info-label">
                       {salaryNegotiable || !minimumSalary
                         ? "Negotiable"
                         : `₱${Number(minimumSalary).toLocaleString()}`}
@@ -3493,17 +3107,10 @@ const handleSaveAndContinue = async () => {
 
                   {/* Maximum Salary */}
                   <div>
-                    <h3
-                      style={{
-                        fontSize: "14px",
-                        fontWeight: 700,
-                        color: "#181D27",
-                        marginBottom: "3px",
-                      }}
-                    >
+                     <h3 className="career-form-label">
                       Maximum Salary
                     </h3>
-                    <p style={{ color: "#414651", fontSize: "16px", fontWeight: 500 ,margin: 0 }}>
+                    <p className="career-form-info-label">
                       {salaryNegotiable || !maximumSalary
                         ? "Negotiable"
                         : `₱${Number(maximumSalary).toLocaleString()}`}
@@ -3514,20 +3121,12 @@ const handleSaveAndContinue = async () => {
 
                   <div style={{ marginTop: "10px" ,paddingBottom: "8px",
                     borderBottom: "1px solid #E5E7EB" }}>
-                    <h3
-                      style={{
-                        fontSize: "14px",
-                        fontWeight: 700,
-                        color: "#181D27",
-                        marginBottom: "15px",
-                      }}
-                    >
+                    <h3 className="career-form-label">
                       Job Description
                     </h3>
                     <div
                       style={{
                         fontSize: "16px",
-                        fontWeight: 500,
                         color: "#414651",
                       }}
                       dangerouslySetInnerHTML={{ __html: description || "" }}
@@ -3536,14 +3135,7 @@ const handleSaveAndContinue = async () => {
 
                   <div style={{ marginTop: "10px" 
                     }}>
-                    <h3
-                      style={{
-                        fontSize: "14px",
-                        fontWeight: 700,
-                        color: "#181D27",
-                        marginBottom: "3px",
-                      }}
-                    >
+                    <h3 className="career-form-label">
                       Team Access
                     </h3>
                     <div
@@ -3654,56 +3246,33 @@ const handleSaveAndContinue = async () => {
                     justifyContent: "space-between",
                   }}
                 >
-                  <span
-                    style={{
-                      fontSize: "20px",
-                      fontWeight: 700,
-                      color: "#111827",
-                      marginLeft: "15px",
-                    }}
-                  >
+                   <span className="career-form-title">
                     CV Review & Pre-screening Questions
                   </span>
+                 
                   <button
-                    style={{
-                    width: "30px",
-                    height: "30px",
-                    borderRadius: "50%",
-                    backgroundColor: "#f8f9fb",
-                    border: "1px solid #e5e7eb",
-                    cursor: "pointer",
-                    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
-                    marginRight: '15px'
-                  }}
-                    onClick={() => setCurrentStep(2)}
-                  >
-                    <i
-                    className="las la-pen"
-                    style={{
-                      fontSize: "18px",
-                      color: "#6b7280",
-                    }}
-                  ></i>
-                  </button>
+                  className="career-form-edit-btn"
+                  onClick={() => setCurrentStep(2)}
+                >
+                  <img
+                  src="/pencil-edit-2.svg"
+                  alt="Edit"
+                  style={{width: "16px", height: "16px"}}
+                  />
+                </button>
                 </div>
                 <div className="layered-card-content">
                   <div style={{ marginTop: "10px", marginBottom: "10px",  paddingBottom: "8px",
                     borderBottom: "1px solid #E5E7EB" }}>
                   <div style={{ marginBottom: "16px", borderBottom: "1px solid #E5E7EB", paddingBottom: "12px" }}>
-                    <h3
-                      style={{
-                        fontSize: "14px",
-                        fontWeight: 600,
-                        color: "#111827",
-                      }}
-                    >
+                    <h3 className="career-form-label">
                       CV Screening
                     </h3>
 
-                    <p
+                      <p
+                        
                       style={{
                           fontSize: "16px",
-                        fontWeight: 500,
                         color: "#414651",
                         display: "flex",
                         alignItems: "center",
@@ -3729,24 +3298,23 @@ const handleSaveAndContinue = async () => {
                     </p>
                   </div>
 
-             <h3
-              style={{
-                fontSize: "14px",
-                fontWeight: 600,
-                color: "#111827",
-                marginBottom: "8px",
-                display: "flex",
-                alignItems: "center",
-                gap: "6px",
-              }}
-            >
-              <img
-                src="/auto_awesome.svg"
-                alt="Auto Awesome Icon"
-                style={{ width: "16px", height: "16px" }}
-              />
-              CV Secret Prompt
-            </h3>
+                    
+                    <h3
+                      className="career-form-label"
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "6px",
+                      }}
+                  >
+                      <img
+                        src="/auto_awesome.svg"
+                        alt="Auto Awesome Icon"
+                        className="career-form-img"
+              
+                        />
+                        CV Secret Prompt
+                      </h3>
 
 
             <div
@@ -3765,13 +3333,10 @@ const handleSaveAndContinue = async () => {
                   ))}
                 </ul>
               ) : (
-                           <span style={{ color: "#414651", fontSize: "14px" }}>
-                        Not specified
-                        </span>
+                <span className="career-form-no-data" style={{fontWeight: 400}}>Not specified.</span>
               )}
             </div>
-
-                  </div>
+          </div>
 
                <div>
           <h3
@@ -3784,47 +3349,46 @@ const handleSaveAndContinue = async () => {
               gap: "5px",
             }}
           >
-    Pre-Screening Questions{" "}
-    {preScreeningQuestions.length > 0 ? (
-      <span
-  style={{
-    display: "inline-flex",
-    justifyContent: "center",
-    fontSize: "14px",
-    fontWeight: 500,
-    color: "#111827",
-    width: "24px",
-    height: "24px",
-    borderRadius: "50%",
-    backgroundColor: "#F9FAFB",
-                            border: "1px solid #E5E7EB",
-                  marginLeft: "5px"
-    
-  }}
->
-  {preScreeningQuestions.length}
-</span>
-    ) : null}
-  </h3>
+         Pre-Screening Questions{" "}
+          {preScreeningQuestions.length > 0 ? (
+            <span
+              style={{
+                display: "inline-flex",
+                justifyContent: "center",
+                fontSize: "14px",
+                fontWeight: 500,
+                color: "#111827",
+                width: "24px",
+                height: "24px",
+                borderRadius: "50%",
+                backgroundColor: "#F9FAFB",
+                border: "1px solid #E5E7EB",
+                marginLeft: "5px"
+              }}
+            >
+              {preScreeningQuestions.length}
+            </span>
+          ) : null}
+        </h3>
 
                     {preScreeningQuestions.length === 0 ? (
-                      <span style={{ color: "#414651", fontSize: "14px" }}>
-                          No pre-screening questions added
+                      <span className="career-form-no-data">
+                          No pre-screening questions added.
                         </span>
  
-  ) : (
-    <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-      {preScreeningQuestions.map((q, idx) => (
-        <div key={idx} style={{ color: "#414651" }}>
-          <p
-            style={{
-              fontWeight: 500,
-              fontSize: "16px",
-              marginBottom: "6px",
-            }}
-          >
-            {idx + 1}. {q.question}
-          </p>
+          ) : (
+            <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+              {preScreeningQuestions.map((q, idx) => (
+                <div key={idx} style={{ color: "#414651" }}>
+                  <p
+                    style={{
+                      fontWeight: 500,
+                      fontSize: "16px",
+                      marginBottom: "6px",
+                    }}
+                  >
+                   {idx + 1}. {q.question}
+               </p>
 
           {/* Dropdown or multiple choice options */}
           {q.type === "dropdown" && q.options && (
@@ -3885,47 +3449,23 @@ const handleSaveAndContinue = async () => {
                     justifyContent: "space-between",
                   }}
                 >
-                  <span
-                    style={{
-                      fontSize: "20px",
-                      fontWeight: 700,
-                      color: "#111827",
-                      marginLeft: "15px",
-                    }}
-                  >
+                 <span className="career-form-title">
                     AI Interview Setup
                   </span>
                   <button
-                    style={{
-                    width: "30px",
-                    height: "30px",
-                    borderRadius: "50%",
-                    backgroundColor: "#f8f9fb",
-                    border: "1px solid #e5e7eb",
-                    cursor: "pointer",
-                    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
-                    marginRight: '15px'
-                  }}
-                    onClick={() => setCurrentStep(3)}
-                  >
-                   <i
-                    className="las la-pen"
-                    style={{
-                      fontSize: "18px",
-                      color: "#6b7280",
-                    }}
-                  ></i>
-                  </button>
+                  className="career-form-edit-btn"
+                  onClick={() => setCurrentStep(3)}
+                >
+                  <img
+                  src="/pencil-edit-2.svg"
+                  alt="Edit"
+                  style={{width: "16px", height: "16px"}}
+                  />
+                </button>
                 </div>
                 <div className="layered-card-content">
                     <div style={{borderBottom: "1px solid #E5E7EB",   }}>
-                    <h3
-                      style={{
-                         fontSize: "14px",
-                        fontWeight: 600,
-                        color: "#111827",
-                      }}
-                    >
+                    <h3 className="career-form-label">
                       AI Interview Settings
                     </h3>
                     <div
@@ -3935,7 +3475,6 @@ const handleSaveAndContinue = async () => {
                             <p
                       style={{
                           fontSize: "16px",
-                        fontWeight: 500,
                         color: "#414651",
                         display: "flex",
                         alignItems: "center",
@@ -3961,13 +3500,7 @@ const handleSaveAndContinue = async () => {
                         
                       </div>
                       <div style={{display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 0"}}>
-                        <span
-                          style={{
-                         fontSize: "14px",
-                        fontWeight: 600,
-                        color: "#111827",
-                      }}
-                        >
+                        <span className="career-form-label">
                          Require Video on Interview
                         </span>
                        
@@ -4025,44 +3558,19 @@ const handleSaveAndContinue = async () => {
 
               <div>
   <h3
-    style={{
-      fontSize: "14px",
-      fontWeight: 600,
-      color: "#111827",
-      marginBottom: "8px",
-    }}
+   className="career-form-label"
   >
     Interview Questions{" "}
     {questions.reduce((acc, c) => acc + c.questions.length, 0) > 0 && (
-      <span
-                  style={{
-                  border: "1px solid #D5D9EB",
-                  borderRadius: "16px",
-                  padding: "2px 8px",
-                  fontSize: "14px",
-                  fontWeight: 500,
-                  lineHeight: "20px",
-                  color: "#414651",
-                  marginLeft: "5px"
-                }}
-                  >
+      <span className="career-form-data-length">
         {questions.reduce((acc, c) => acc + c.questions.length, 0)}
       </span>
     )}
   </h3>
 
   {questions.filter((cat) => cat.questions.length > 0).length === 0 ? (
-    <div
-      style={{
-        backgroundColor: "#F9FAFB",
-        padding: "16px",
-        borderRadius: "8px",
-        color: "#6B7280",
-        fontSize: "14px",
-        fontStyle: "italic",
-      }}
-    >
-      No interview questions added
+    <div className="career-form-no-data">
+      No interview questions added.
     </div>
   ) : (
     <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
@@ -4089,7 +3597,6 @@ const handleSaveAndContinue = async () => {
                       color: "#414651",
                       minWidth: "20px",
                       fontSize: "16px",
-                      fontWeight: 500
                     }}
                   >
                     {qi + 1}.
@@ -4098,7 +3605,6 @@ const handleSaveAndContinue = async () => {
                     style={{
                       color: "#414651",
                        fontSize: "16px",
-                      fontWeight: 500
                     }}
                   >
                     {typeof q === "string" ? q : (q as any)?.question}
@@ -4150,7 +3656,8 @@ const handleSaveAndContinue = async () => {
                
                 <img
                 src="/tips-vector.svg"
-                alt="Tips icon"
+                  alt="Tips icon"
+                  className="career-form-img "
               />
                 Tips
               </span>
