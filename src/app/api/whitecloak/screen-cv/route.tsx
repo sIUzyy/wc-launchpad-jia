@@ -92,7 +92,8 @@ export async function POST(request: Request) {
     apiKey: process.env.OPENAI_API_KEY,
   });
   const completion = await openai.responses.create({
-    model: "o4-mini",
+    // model: "o4-mini",
+    model: "gpt-5-nano",
     reasoning: { effort: "high" },
     input: [
       {

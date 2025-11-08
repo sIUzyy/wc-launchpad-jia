@@ -940,98 +940,96 @@ const handleSaveAndContinue = async () => {
       )}
 
 
-{/* Stepper */}
-<div
-  style={{
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "flex-start",
-    marginTop: 4,
-    marginBottom: 8,
-    width: "100%",
-    position: "relative",
-  }}
->
-  {[
-    { id: 1, label: "Career Details & Team Access" },
-    { id: 2, label: "CV Review & Pre-screening" },
-    { id: 3, label: "AI Interview Setup" },
-    { id: 4, label: "Review Career" },
-  ].map((step, index, steps) => (
-    <div
-      key={step.id}
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        flex: 1,
-        position: "relative",
-        zIndex: 2,
-      }}
-    >
-      {/* Connecting line before dot (except first) */}
-      {index > 0 && (
-        <div
-          style={{
-            position: "absolute",
-            right: "calc(50% + 8px)",
-            top: "6px",
-            width: "calc(100% - 32px)",
-            height: "5px",
-            backgroundColor:
-              currentStep > steps[index - 1].id ? "#111827" : "#E9EAEB", // ✅ turns black once previous step is done
-            marginRight: "8px",
-            borderRadius: "999px",
-            transition: "background-color 0.3s ease", // nice smooth color change
-          }}
-        />
-      )}
+          {/* stepper (progress-bar) */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "flex-start",
+              marginTop: 4,
+              marginBottom: 8,
+              width: "100%",
+              position: "relative",
+            }}
+          >
+            {[
+              { id: 1, label: "Career Details & Team Access" },
+              { id: 2, label: "CV Review & Pre-screening" },
+              { id: 3, label: "AI Interview Setup" },
+              { id: 4, label: "Review Career" },
+            ].map((step, index, steps) => (
+              <div
+                key={step.id}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  flex: 1,
+                  position: "relative",
+                  zIndex: 2,
+                }}
+              >
+                {/* connecting line before dot */}
+                {index > 0 && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      right: "calc(50% + 8px)",
+                      top: "6px",
+                      width: "calc(100% - 32px)",
+                      height: "5px",
+                      backgroundColor:
+                        currentStep > steps[index - 1].id ? "#111827" : "#E9EAEB",
+                      marginRight: "8px",
+                      borderRadius: "999px",
+                      transition: "background-color 0.3s ease", 
+                    }}
+                  />
+                )}
 
-      {/* Step circle with SVG */}
-      <div
-        style={{
-          cursor: "default",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: 8,
-        }}
-      >
-        <img
-          src={
-            currentStep > step.id
-              ? "/check_circle.svg" // ✅ done
-              : "/dot-stepper.svg" // ⭕ current or upcoming
-          }
-          alt=""
-          style={{
-            width: "16.67px",
-            height: "16.67px",
-            filter:
-              currentStep >= step.id
-                ? "none"
-                : "grayscale(100%) opacity(0.5)",
-          }}
-        />
-        {/* Label */}
-        <span
-          style={{
-            fontSize: "12px",
-            fontWeight: currentStep === step.id ? 700 : 500,
-            color: currentStep === step.id ? "#111827" : "#717680",
-            textAlign: "center",
-            whiteSpace: "nowrap",
-          }}
-        >
-          {step.label}
-        </span>
-      </div>
-    </div>
-  ))}
-</div>
-
-
-      {/* End of Stepper */}
+                {/* step circle with SVG */}
+                <div
+                  style={{
+                    cursor: "default",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: 8,
+                  }}
+                >
+                  <img
+                    src={
+                      currentStep > step.id
+                        ? "/check_circle.svg" 
+                        : "/dot-stepper.svg" 
+                    }
+                    alt=""
+                    style={{
+                      width: "16.67px",
+                      height: "16.67px",
+                      filter:
+                        currentStep >= step.id
+                          ? "none"
+                          : "grayscale(100%) opacity(0.5)",
+                    }}
+                  />
+                  {/* label */}
+                  <span
+                    style={{
+                      fontSize: "12px",
+                      fontWeight: currentStep === step.id ? 700 : 500,
+                      color: currentStep === step.id ? "#111827" : "#717680",
+                      textAlign: "center",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {step.label}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+      {/* end of stepper */}
       
       <div
         style={{
@@ -1053,6 +1051,7 @@ const handleSaveAndContinue = async () => {
             gap: 20,
           }}
         >
+          {/* step 1: career details & team access */}
           {currentStep === 1 && (
             <>
               {/* career-information section*/}
@@ -1070,6 +1069,7 @@ const handleSaveAndContinue = async () => {
                     1. Career Information
                   </span>
                   <div className="layered-card-content">
+
                     {/* basic-information section*/}
                     <div
                       style={{
@@ -1089,6 +1089,7 @@ const handleSaveAndContinue = async () => {
                         Basic Information
                       </span>
 
+                      {/* job title - label */}
                       <span
                         style={{
                           fontSize: "14px",
@@ -1099,6 +1100,7 @@ const handleSaveAndContinue = async () => {
                         Job Title
                       </span>
 
+                      {/* job title - input */}
                       <div style={{ position: "relative" }}>
                         <input
                           value={jobTitle}
@@ -1133,6 +1135,8 @@ const handleSaveAndContinue = async () => {
                           ></i>
                         )}
                       </div>
+
+                      {/* job title - error */}
                       {step1Errors.jobTitle && (
                         <span
                           style={{
@@ -1145,6 +1149,7 @@ const handleSaveAndContinue = async () => {
                         </span>
                       )}
                     </div>
+                    {/* end of basic-information section*/}
 
                     {/* work-setting section*/}
                     <div
@@ -1155,6 +1160,7 @@ const handleSaveAndContinue = async () => {
                         marginBottom: 10,
                       }}
                     >
+                      {/* work-setting section*/}
                       <span
                         style={{
                           fontSize: "14px",
@@ -1165,6 +1171,7 @@ const handleSaveAndContinue = async () => {
                         Work Setting
                       </span>
 
+                      {/* employment type & arrangement */}
                       <div
                         style={{
                           display: "flex",
@@ -1172,6 +1179,7 @@ const handleSaveAndContinue = async () => {
                           gap: 10,
                         }}
                       >
+                        {/* employment type */}
                         <div style={{ width: "50%" }}>
                           <span
                             style={{
@@ -1182,6 +1190,7 @@ const handleSaveAndContinue = async () => {
                           >
                             Employment Type
                           </span>
+                          {/* employment type - dropdown */}
                           <CustomDropdown
                             onSelectSetting={(employmentType) => {
                               setEmploymentType(employmentType);
@@ -1199,6 +1208,7 @@ const handleSaveAndContinue = async () => {
                             settingList={employmentTypeOptions}
                             placeholder="Choose employment type"
                           />
+                          {/* employment type - error */}
                           {step1Errors.employmentType && (
                             <span
                               style={{
@@ -1213,7 +1223,9 @@ const handleSaveAndContinue = async () => {
                             </span>
                           )}
                         </div>
+                        {/* arrangement */}
                         <div style={{ width: "50%" }}>
+                          {/* arrangement - label */}
                           <span
                             style={{
                           fontSize: "14px",
@@ -1223,6 +1235,7 @@ const handleSaveAndContinue = async () => {
                           >
                             Arrangement
                           </span>
+                          {/* arrangement - dropdown */}
                           <CustomDropdown
                             onSelectSetting={(setting) => {
                               setWorkSetup(setting);
@@ -1237,6 +1250,7 @@ const handleSaveAndContinue = async () => {
                             settingList={workSetupOptions}
                             placeholder="Choose work arrangement "
                           />
+                          {/* arrangement - error */}
                           {step1Errors.workSetup && (
                             <span
                               style={{
@@ -1253,6 +1267,7 @@ const handleSaveAndContinue = async () => {
                         </div>
                       </div>
                     </div>
+                    {/* end of work-setting section*/}
 
                     {/* location section*/}
                     <div
@@ -1263,6 +1278,7 @@ const handleSaveAndContinue = async () => {
                         marginBottom: 10,
                       }}
                     >
+                      {/* location section*/}
                       <span
                        style={{
                           fontSize: "14px",
@@ -1273,6 +1289,7 @@ const handleSaveAndContinue = async () => {
                         Location
                       </span>
 
+                      {/* country & state / province & city */}
                       <div
                         style={{
                           display: "flex",
@@ -1280,7 +1297,9 @@ const handleSaveAndContinue = async () => {
                           gap: 10,
                         }}
                       >
+                        {/* country */}
                         <div style={{ width: "100%" }}>
+                          {/* country - label */}
                           <span
                              style={{
                           fontSize: "14px",
@@ -1290,6 +1309,7 @@ const handleSaveAndContinue = async () => {
                           >
                             Country
                           </span>
+                          {/* country - dropdown */}
                           <CustomDropdown
                             onSelectSetting={(setting) => {
                               setCountry(setting);
@@ -1299,7 +1319,10 @@ const handleSaveAndContinue = async () => {
                             placeholder="Select Country"
                           />
                         </div>
+                        {/* state / province */}
                         <div style={{ width: "100%" }}>
+
+                          {/* state / province - label */}
                           <span
                             style={{
                           fontSize: "14px",
@@ -1309,6 +1332,7 @@ const handleSaveAndContinue = async () => {
                           >
                             State / Province
                           </span>
+                          {/* state / province - dropdown */}
                           <CustomDropdown
                             onSelectSetting={(province) => {
                               setProvince(province);
@@ -1342,6 +1366,7 @@ const handleSaveAndContinue = async () => {
                             settingList={provinceList}
                             placeholder="Choose state / province"
                           />
+                          {/* state / province - error */}
                           {step1Errors.province && (
                             <span
                               style={{
@@ -1356,7 +1381,9 @@ const handleSaveAndContinue = async () => {
                             </span>
                           )}
                         </div>
+                        {/* city */}
                         <div style={{ width: "100%" }}>
+                          {/* city - label */}
                           <span
                             style={{
                           fontSize: "14px",
@@ -1366,6 +1393,7 @@ const handleSaveAndContinue = async () => {
                           >
                             City
                           </span>
+                          {/* city - dropdown */}
                           <CustomDropdown
                             onSelectSetting={(city) => {
                               setCity(city);
@@ -1377,6 +1405,7 @@ const handleSaveAndContinue = async () => {
                             settingList={cityList}
                             placeholder="Choose city"
                           />
+                          {/* city - error */}
                           {step1Errors.city && (
                             <span
                               style={{
@@ -1402,6 +1431,7 @@ const handleSaveAndContinue = async () => {
                         marginBottom: 10,
                       }}
                     >
+                      {/* salary section*/}
                       <div
                         style={{
                           display: "flex",
@@ -1409,6 +1439,7 @@ const handleSaveAndContinue = async () => {
                           justifyContent: "space-between",
                         }}
                       >
+                        {/* salary section - label*/}
                         <span
                          style={{
                           fontSize: "14px",
@@ -1419,6 +1450,7 @@ const handleSaveAndContinue = async () => {
                           Salary
                         </span>
 
+                        {/* salary section - toggle */}
                         <div
                           style={{
                             display: "flex",
@@ -1434,7 +1466,7 @@ const handleSaveAndContinue = async () => {
                               checked={salaryNegotiable}
                               onChange={() => {
                                 setSalaryNegotiable(!salaryNegotiable);
-                                // Clear salary errors when toggling to negotiable
+                                
                                 if (!salaryNegotiable) {
                                   setStep1Errors({
                                     ...step1Errors,
@@ -1458,6 +1490,7 @@ const handleSaveAndContinue = async () => {
                         </div>
                       </div>
 
+                      {/* minimum salary & maximum salary */}
                       <div
                         style={{
                           display: "flex",
@@ -1465,7 +1498,9 @@ const handleSaveAndContinue = async () => {
                           gap: 10,
                         }}
                       >
+                        {/* minimum salary */}
                         <div style={{ flex: 1 }}>
+                          {/* minimum salary - label */}
                           <span
                             style={{
                           fontSize: "14px",
@@ -1475,6 +1510,7 @@ const handleSaveAndContinue = async () => {
                           >
                             Minimum Salary
                           </span>
+                          {/* minimum salary - input */}
                           <div style={{ position: "relative" }}>
                             <span
                               style={{
@@ -1519,6 +1555,7 @@ const handleSaveAndContinue = async () => {
                                 }
                               }}
                             />
+                            {/* minimum salary - error */}
                             {step1Errors.minimumSalary && (
                               <i
                                 className="la la-exclamation-circle"
@@ -1547,6 +1584,7 @@ const handleSaveAndContinue = async () => {
                               PHP
                             </span>
                           </div>
+                          {/* minimum salary - error */}
                           {step1Errors.minimumSalary && (
                             <span
                               style={{
@@ -1561,7 +1599,10 @@ const handleSaveAndContinue = async () => {
                             </span>
                           )}
                         </div>
+
+                        {/* maximum salary */}
                         <div style={{ flex: 1 }}>
+                          {/* maximum salary - label */}
                           <span
                              style={{
                           fontSize: "14px",
@@ -1571,6 +1612,7 @@ const handleSaveAndContinue = async () => {
                           >
                             Maximum Salary
                           </span>
+                          {/* maximum salary - input */}
                           <div style={{ position: "relative" }}>
                             <span
                               style={{
@@ -1615,6 +1657,7 @@ const handleSaveAndContinue = async () => {
                                 }
                               }}
                             ></input>
+                            {/* maximum salary - error */}
                             {step1Errors.maximumSalary && (
                               <i
                                 className="la la-exclamation-circle"
@@ -1643,6 +1686,7 @@ const handleSaveAndContinue = async () => {
                               PHP
                             </span>
                           </div>
+                          {/* maximum salary - error */}
                           {step1Errors.maximumSalary && (
                             <span
                               style={{
@@ -3721,7 +3765,9 @@ const handleSaveAndContinue = async () => {
                   ))}
                 </ul>
               ) : (
-                <span style={{ color: "#6B7280", fontStyle: "italic" }}>Not specified</span>
+                           <span style={{ color: "#414651", fontSize: "14px" }}>
+                        Not specified
+                        </span>
               )}
             </div>
 
@@ -3761,19 +3807,11 @@ const handleSaveAndContinue = async () => {
     ) : null}
   </h3>
 
-  {preScreeningQuestions.length === 0 ? (
-    <div
-      style={{
-        backgroundColor: "#F9FAFB",
-        padding: "16px",
-        borderRadius: "8px",
-        color: "#6B7280",
-        fontSize: "14px",
-        fontStyle: "italic",
-      }}
-    >
-      No pre-screening questions added
-    </div>
+                    {preScreeningQuestions.length === 0 ? (
+                      <span style={{ color: "#414651", fontSize: "14px" }}>
+                          No pre-screening questions added
+                        </span>
+ 
   ) : (
     <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
       {preScreeningQuestions.map((q, idx) => (

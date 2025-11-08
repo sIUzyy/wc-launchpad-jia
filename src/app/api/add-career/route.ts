@@ -151,6 +151,44 @@ export async function POST(request: Request) {
     };
     questions = sanitizeDeep(questions);
 
+    // Pre-screening questions: optional but if provided, validate and sanitize
+    let preScreeningQuestions: any[] = Array.isArray(raw.preScreeningQuestions)
+      ? raw.preScreeningQuestions
+      : [];
+    const allowedTypes = new Set([
+      "dropdown",
+      "range",
+      "short-answer",
+      "long-answer",
+      "checkboxes",
+    ]);
+    const sanitizePreQ = (q: any, idx: number) => {
+      const out: any = {};
+      if (q && typeof q === "object") {
+        out.id = sanitizeText(q.id || `q-${idx}`, { maxLen: 64 });
+        out.question = sanitizeText(q.question, { maxLen: 1000 });
+        const t = sanitizeText(q.type, { maxLen: 32 });
+        out.type = allowedTypes.has(t) ? t : "short-answer";
+        if (out.type === "dropdown" || out.type === "checkboxes") {
+          out.options = Array.isArray(q.options)
+            ? q.options.map((o: any) => sanitizeText(o, { maxLen: 200 })).filter((s: string) => s)
+            : [];
+        }
+        if (out.type === "range") {
+          const min = parseNumber(q.min);
+          const max = parseNumber(q.max);
+          out.min = typeof min === "number" && min >= 0 ? min : 0;
+          out.max = typeof max === "number" && max >= out.min ? max : out.min;
+          out.currency = sanitizeText(q.currency || "PHP", { maxLen: 8 }) || "PHP";
+        }
+        out.required = q?.required === false ? false : true;
+      }
+      return out;
+    };
+    if (preScreeningQuestions.length > 0) {
+      preScreeningQuestions = preScreeningQuestions.map(sanitizePreQ).filter((q) => q.question);
+    }
+
     const { db } = await connectMongoDB();
 
     const orgDetails = await db.collection("organizations").aggregate([
@@ -198,6 +236,7 @@ export async function POST(request: Request) {
       jobTitle,
       description,
       questions,
+      preScreeningQuestions,
       location,
       workSetup,
       workSetupRemarks,
