@@ -977,21 +977,25 @@ const handleSaveAndContinue = async () => {
           </div>
           {/* end of stepper */}
       
+       {/* parent of left and right columns */}
       <div
         style={{
           display: "flex",
           flexDirection: "row",
-          justifyContent: "space-between",
+          justifyContent: "center",
           width: "100%",
+          maxWidth: 1280,
           gap: 20,
           alignItems: "flex-start",
-          marginTop: 16,
+          margin: "16px auto 0",
         }}
       >
+        {/* left column */}
         <div
           style={{
             width: "100%",
-            maxWidth: "66.6667%",
+            flex: "0 1 66.6667%",
+            maxWidth: 840,
             display: "flex",
             flexDirection: "column",
             gap: 20,
@@ -3570,114 +3574,52 @@ const handleSaveAndContinue = async () => {
           )}
         </div>
 
-        {/* tips (right side) */}
+        {/* right column */}
         <div
           style={{
-            maxWidth: "33.3333%",
+            width: "100%",
+            flex: "0 1 33.3333%",
+            maxWidth: 420,
             display: "flex",
             flexDirection: "column",
             gap: 8,
           }}
         >
+          {/* tips section */}
           <div className="layered-card-middle">
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                gap: 8,
-              }}
-            >
-              <span
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "5px",
-                  fontSize: "14px",
-                  fontWeight: 700,
-                  color: "#181D27",
-                  marginLeft: "15px",
-                }}
-              >
-               
-                <img
-                src="/tips-vector.svg"
-                  alt="Tips icon"
-                  className="career-form-img "
-              />
-                Tips
-              </span>
-            </div>
+         
+             {/* tips title label */}
+            <span className="career-form-tips-label">
+              <img src="/tips-vector.svg" alt="Tips icon" className="career-form-img" />
+              Tips
+            </span>
+
+            {/* tips content */}
             <div className="layered-card-content">
               <div
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  gap: 12,
+                  gap: 20,
                 }}
               >
-                <span
-                  style={{
-                    fontWeight: 500,
-                    fontSize: "14px",
-                    lineHeight: "20px",
-                    color: "#717680",
-                  }}
-                >
-                  <span
-                    style={{
-                      fontWeight: 700,
-                      fontSize: "14px",
-                      lineHeight: "20px",
-                      color: "#181D27",
-                    }}
-                  >
-                    Use clear, standard job titles
-                  </span>{" "}
-                  for better searchability (e.g., "Software Engineer" instead of
-                  "Code Ninja" or "Tech Rockstar").
+                {/* tips content 01 */}
+                <span className="career-form-tips-main">
+                <span className="career-form-tips-title">Use clear, standard job titles</span>{" "}
+                for better searchability (e.g., "Software Engineer" instead of "Code Ninja" or
+                "Tech Rockstar").
                 </span>
 
-                <span
-                  style={{
-                    fontWeight: 500,
-                    fontSize: "14px",
-                    lineHeight: "20px",
-                    color: "#717680",
-                  }}
-                >
-                  <span
-                    style={{
-                      fontWeight: 700,
-                      fontSize: "14px",
-                      lineHeight: "20px",
-                      color: "#181D27",
-                    }}
-                  >
-                    Avoid abbreviations
-                  </span>{" "}
+                {/* tips content 02 */}
+                <span className="career-form-tips-main">
+                  <span className="career-form-tips-title">Avoid abbreviations</span>{" "}
                   or internal role codes that applicants may not understand
                   (e.g., use "QA Engineer" instead of "QE II" or "QA-TL").
                 </span>
 
-                <span
-                  style={{
-                    fontWeight: 500,
-                    fontSize: "14px",
-                    lineHeight: "20px",
-                    color: "#717680",
-                  }}
-                >
-                  <span
-                    style={{
-                      fontWeight: 700,
-                      fontSize: "14px",
-                      lineHeight: "20px",
-                      color: "#181D27",
-                    }}
-                  >
-                    Keep it concise —
-                  </span>{" "}
+                {/* tips content 03 */}
+                <span className="career-form-tips-main">
+                  <span className="career-form-tips-title">Keep it concise —</span>{" "}
                   job titles should be no more than a few words (2-4 max),
                   avoiding fluff or marketing terms.
                 </span>
@@ -3686,12 +3628,16 @@ const handleSaveAndContinue = async () => {
           </div>
         </div>
       </div>
+
+      {/* modal */}
       {showSaveModal && (
         <CareerActionModal
           action={showSaveModal}
           onAction={(action) => saveCareer(action)}
         />
       )}
+
+      {/* loading */}
       {isSavingCareer && (
         <FullScreenLoadingAnimation
           title={formType === "add" ? "Saving career..." : "Updating career..."}

@@ -67,7 +67,7 @@ export default function RichTextEditor({setText, text,  placeholder = "Enter des
         <div
           ref={descriptionEditorRef}
           contentEditable={true}
-          className="form-control"
+          className="form-control rte-editor"
           style={{
             height: "300px",
             overflowY: "auto",
@@ -83,14 +83,15 @@ export default function RichTextEditor({setText, text,  placeholder = "Enter des
           data-placeholder={placeholder}
         ></div>
         {/* Rich Text Editor Toolbar */}
-        <div style={{ 
+        <div className="rte-toolbar" style={{ 
           border: "1px solid #E9EAEB",
           borderRadius: "0 0 4px 4px",
           backgroundColor: "#FFFFFF",
           display: "flex",
           gap: "4px",
           flexWrap: "wrap",
-          height: "48px"
+            height: "48px",
+          marginTop: "-7px"
         }}>
           <button
             type="button"
