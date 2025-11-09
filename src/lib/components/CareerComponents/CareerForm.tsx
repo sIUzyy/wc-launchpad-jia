@@ -760,99 +760,72 @@ const handleSaveAndContinue = async () => {
               gap: "10px",
             }}
           >
-            {currentStep === 1 ? (
-              <>
-                <button
-                  disabled={isSavingCareer}
-                  style={{
-                    width: "fit-content",
-                    color: "#414651",
-                    background: "#fff",
-                    border: "1px solid #D5D7DA",
-                    padding: "8px 16px",
-                    borderRadius: "60px",
-                    cursor: isSavingCareer ? "not-allowed" : "pointer",
-                    whiteSpace: "nowrap",
-                  }}
-                  onClick={saveDraft}
-                >
-                  Save as Unpublished
-                </button>
-                <button
-                disabled={isSavingCareer}
+         {/* save as unpublished */}
+            <button
+              disabled={!isFormValid?.() && currentStep !== 1 || isSavingCareer}
+              style={{
+                width: "fit-content",
+                color: "#414651",
+                background: "#fff",
+                border: "1px solid #D5D7DA",
+                padding: "8px 16px",
+                borderRadius: "60px",
+                cursor:
+                  (!isFormValid?.() && currentStep !== 1) || isSavingCareer
+                    ? "not-allowed"
+                    : "pointer",
+                whiteSpace: "nowrap",
+              }}
+              onClick={() =>
+                currentStep === 1 ? saveDraft() : confirmSaveCareer("inactive")
+              }
+            >
+              Save as Unpublished
+            </button>
+            
+            {/* save and continue / publish */}
+              <button
+                disabled={!isFormValid?.() && currentStep !== 1 || isSavingCareer}
                 style={{
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  gap: "8px", 
+                  gap: "8px",
                   width: "fit-content",
-                  background: isSavingCareer ? "#D5D7DA" : "black",
+                  background:
+                    (!isFormValid?.() && currentStep !== 1) || isSavingCareer
+                      ? "#D5D7DA"
+                      : "black",
                   color: "#fff",
                   border: "1px solid #E9EAEB",
                   padding: "8px 16px",
                   borderRadius: "60px",
-                  cursor: isSavingCareer ? "not-allowed" : "pointer",
+                  cursor:
+                    (!isFormValid?.() && currentStep !== 1) || isSavingCareer
+                      ? "not-allowed"
+                      : "pointer",
                   whiteSpace: "nowrap",
                 }}
                 onClick={handleSaveAndContinue}
               >
-                Save and Continue
-                <i
-                  className="las la-arrow-right"
-                  style={{ color: "#fff", fontSize: 20 }}
-                ></i>
+                {currentStep === 4 ? (
+                  <>
+                    <i
+                      className="la la-check-circle"
+                      style={{ color: "#fff", fontSize: 20 }}
+                    ></i>
+                    Publish
+                  </>
+                ) : (
+                  <>
+                    Save and Continue
+                    <i
+                      className="las la-arrow-right"
+                      style={{ color: "#fff", fontSize: 20 }}
+                    ></i>
+                  </>
+                )}
               </button>
-
-              </>
-            ) : (
-              <>
-                <button
-                  disabled={!isFormValid() || isSavingCareer}
-                  style={{
-                    width: "fit-content",
-                    color: "#414651",
-                    background: "#fff",
-                    border: "1px solid #D5D7DA",
-                    padding: "8px 16px",
-                    borderRadius: "60px",
-                    cursor:
-                      !isFormValid() || isSavingCareer
-                        ? "not-allowed"
-                        : "pointer",
-                    whiteSpace: "nowrap",
-                  }}
-                  onClick={() => {
-                    confirmSaveCareer("inactive");
-                  }}
-                >
-                  Save as Unpublished
-                </button>
-                <button
-                  disabled={!isFormValid() || isSavingCareer}
-                  style={{
-                    width: "fit-content",
-                    background:
-                      !isFormValid() || isSavingCareer ? "#D5D7DA" : "black",
-                    color: "#fff",
-                    border: "1px solid #E9EAEB",
-                    padding: "8px 16px",
-                    borderRadius: "60px",
-                    cursor:
-                      !isFormValid() || isSavingCareer
-                        ? "not-allowed"
-                        : "pointer",
-                    whiteSpace: "nowrap",
-                  }}
-                  onClick={handleSaveAndContinue}
-                >
-                  <i
-                    className="la la-check-circle"
-                    style={{ color: "#fff", fontSize: 20, marginRight: 8 }}
-                  ></i>
-                  {currentStep === 4 ? "Publish" : "Save and Continue"}
-                </button>
-              </>
-            )}
           </div>
         </div>
       ) : (
