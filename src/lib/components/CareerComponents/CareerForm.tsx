@@ -10,6 +10,8 @@ import { useAppContext } from "@/lib/context/AppContext";
 import axios from "axios";
 import CareerActionModal from "./CareerActionModal";
 import FullScreenLoadingAnimation from "./FullScreenLoadingAnimation";
+import { assetConstants } from "@/lib/utils/constantsV2";
+import stepperStyles from "@/lib/styles/components/careerFormStepper.module.scss";
 // Setting List icons
 const screeningSettingList = [
   {
@@ -185,6 +187,19 @@ export default function CareerForm({
   const [aiSecretPrompt, setAiSecretPrompt] = useState(
     career?.aiSecretPrompt || ""
   );
+  const steps = [
+    { id: 1, label: "Career Details & Team Access" },
+    { id: 2, label: "CV Review & Pre-screening" },
+    { id: 3, label: "AI Interview Setup" },
+    { id: 4, label: "Review Career" },
+  ];
+
+  function processState(index: number, isAdvance: boolean = false) {
+    const currentIndex = (currentStep || 1) - 1; // currentStep is 1-based
+    if (index < currentIndex) return "Completed";
+    if (index === currentIndex) return "In Progress";
+    return "Pending";
+  }
   const suggestedPreScreeningQuestions = [
     {
       title: "Notice Period",
@@ -914,95 +929,47 @@ const handleSaveAndContinue = async () => {
 
 
           {/* stepper (progress-bar) */}
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "flex-start",
-              marginTop: 4,
-              marginBottom: 8,
-              width: "100%",
-              position: "relative",
-            }}
-          >
-            {[
-              { id: 1, label: "Career Details & Team Access" },
-              { id: 2, label: "CV Review & Pre-screening" },
-              { id: 3, label: "AI Interview Setup" },
-              { id: 4, label: "Review Career" },
-            ].map((step, index, steps) => (
-              <div
-                key={step.id}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  flex: 1,
-                  position: "relative",
-                  zIndex: 2,
-                }}
-              >
-                {/* connecting line before dot */}
-                {index > 0 && (
-                  <div
-                    style={{
-                      position: "absolute",
-                      right: "calc(50% + 8px)",
-                      top: "6px",
-                      width: "calc(100% - 32px)",
-                      height: "5px",
-                      backgroundColor:
-                        currentStep > steps[index - 1].id ? "#111827" : "#E9EAEB",
-                      marginRight: "8px",
-                      borderRadius: "999px",
-                      transition: "background-color 0.3s ease", 
-                    }}
-                  />
-                )}
-
-                {/* step circle with SVG */}
-                <div
-                  style={{
-                    cursor: "default",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    gap: 8,
-                  }}
-                >
+          <div className={stepperStyles.stepContainer}>
+            <div className={stepperStyles.step}>
+              {steps.map((_, index) => (
+                <div className={stepperStyles.stepBar} key={index}>
                   <img
-                    src={
-                      currentStep > step.id
-                        ? "/check_circle.svg" 
-                        : "/dot-stepper.svg" 
-                    }
                     alt=""
-                    style={{
-                      width: "16.67px",
-                      height: "16.67px",
-                      filter:
-                        currentStep >= step.id
-                          ? "none"
-                          : "grayscale(100%) opacity(0.5)",
-                    }}
+                    src={
+                      assetConstants[
+                        processState(index, true).toLowerCase().replace(" ", "_")
+                      ]
+                    }
                   />
-                  {/* label */}
-                  <span
-                    style={{
-                      fontSize: "12px",
-                      fontWeight: currentStep === step.id ? 700 : 500,
-                      color: currentStep === step.id ? "#111827" : "#717680",
-                      textAlign: "center",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {step.label}
-                  </span>
+                  {index < steps.length - 1 && (
+                    <hr
+                      className={
+                        stepperStyles[
+                          processState(index).toLowerCase().replace(" ", "_")
+                        ]
+                      }
+                    />
+                  )}
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+
+            <div className={stepperStyles.step}>
+              {steps.map((item, index) => (
+                <span
+                  className={`${stepperStyles.stepDetails} ${
+                    stepperStyles[
+                      processState(index, true).toLowerCase().replace(" ", "_")
+                    ]
+                  }`}
+                  key={index}
+                >
+                  {item.label}
+                </span>
+              ))}
+            </div>
           </div>
-      {/* end of stepper */}
+          {/* end of stepper */}
       
       <div
         style={{

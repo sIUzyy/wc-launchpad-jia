@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
   const completion = await openai.responses.create({
     // model: "o4-mini",
     model: "gpt-5-nano",
-    reasoning: { effort: "high" },
+    reasoning: { effort: "low" },
     input: [
       {
         role: "user",
