@@ -929,7 +929,13 @@ const handleSaveAndContinue = async () => {
 
 
           {/* stepper (progress-bar) */}
-          <div className={stepperStyles.stepContainer}>
+      <div
+        className={stepperStyles.stepContainer}
+         style={{
+           borderBottom: "1px solid #EAECF5", 
+           paddingBottom: "25px"
+        }}
+      >
             <div className={stepperStyles.step}>
               {steps.map((_, index) => (
                 <div className={stepperStyles.stepBar} key={index}>
