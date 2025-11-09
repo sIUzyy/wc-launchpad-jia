@@ -667,7 +667,7 @@ export default function () {
                       </div>
                     </div>
                   ))}
-                  <button onClick={handleCVScreen}>Submit CV</button>
+                  <button onClick={handleCVScreen}>Continue</button>
                 </div>
               )}
             </>

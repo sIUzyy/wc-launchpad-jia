@@ -267,6 +267,8 @@ export default function ({ modalType, setModalType }) {
       });
   }
 
+  console.log(applicationData)
+
   return (
     <div className={styles.modalContainer}>
       {modalType == modalList[0] && (
@@ -553,11 +555,22 @@ export default function ({ modalType, setModalType }) {
                 </span>
               )}
 
-              {applicationData.workSetup && (
-                <div className={styles.tagContainer}>
-                  <span>{applicationData.workSetup}</span>
+              {(applicationData.employmentType || applicationData.workSetup) && (
+                <div className={styles.headerActions}>
+                  {applicationData.employmentType && (
+                    <div className={styles.tagContainer}>
+                      <span>{applicationData.employmentType}</span>
+                    </div>
+                  )}
+                  {applicationData.workSetup && (
+                    <div className={styles.tagContainer}>
+                      <span>{applicationData.workSetup}</span>
+                    </div>
+                  )}
                 </div>
               )}
+
+              <button className={styles.applyBtn} onClick={handleClose}>Apply Now</button>
 
               <hr />
 
@@ -567,7 +580,33 @@ export default function ({ modalType, setModalType }) {
                   __html: applicationData.description,
                 }}
               />
-              <button onClick={handleClose}>Close</button>
+
+               <hr />
+
+              {applicationData.organization && (applicationData.organization.name || applicationData.organization.description || applicationData.organization.image) && (
+                <div className={styles.companyCard}>
+                  <div className={styles.orgRow}>
+                    {applicationData.organization.image && (
+                      <img alt="" className={styles.orgLogo} src={applicationData.organization.image} />
+                    )}
+                    <div className={styles.orgText}>
+                      {applicationData.organization.name && (
+                        <span className={styles.orgName}>{applicationData.organization.name}</span>
+                      )}
+                      {applicationData.organization.description && (
+                        <div
+                          className={styles.orgDescription}
+                          dangerouslySetInnerHTML={{ __html: applicationData.organization.description }}
+                        />
+                      )}
+                      <div className={styles.orgActions}>
+                        <button className="secondaryBtn">Learn More</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
             </div>
           </div>
         </div>

@@ -145,7 +145,7 @@
             }
           }
           .tagContainer {
-            margin: 16px 0 0 0;
+            margin: 0 0 20px 0;
             span {
               background: #f4f4f5;
               border-radius: 24px;
@@ -157,6 +157,13 @@
               color: #6a6a6a;
             }
           }
+          .headerActions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 16px 0 0 0;
+          }
           hr {
             width: 100%;
             border: 1px solid var(--Neutral-200, #ebebf5);
@@ -164,12 +171,58 @@
           }
           p {
             white-space: pre-wrap;
+            color: #414651;
           }
           button {
             width: fit-content;
-            align-self: flex-end;
+            align-self: flex-start;
             margin: 0;
             padding: 10px 27.5px;
+          }
+          .applyBtn {
+            background: var(--Button-bg-primary, #181d27);
+            border: 1px solid var(--Button-border-primary, #d5d7da);
+            color: var(--Button-text-primary, #ffffff);
+            border-radius: 24px;
+            padding: 8px 16px;
+          }
+          .companyCard {
+            width: 100%;
+            box-sizing: border-box;
+            margin: 10px 0 0 0;
+            background: #ffffff;
+          }
+
+          .orgRow {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+          }
+          .orgLogo {
+            height: 44px;
+            width: 44px;
+            object-fit: cover;
+            border-radius: 8px;
+          }
+          .orgText {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+          }
+          .orgName {
+            font-weight: 700;
+            font-size: 16px;
+            line-height: 24px;
+            color: #181d27;
+          }
+          .orgDescription {
+            color: var(--Text-text-secondary, #414651);
+            font-size: 14px;
+            line-height: 20px;
+          }
+          .orgActions {
+            display: flex;
+            justify-content: flex-start;
           }
         }
       }
