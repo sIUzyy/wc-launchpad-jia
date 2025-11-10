@@ -25,6 +25,12 @@ input[type="number"] {
   margin-bottom: 10px;
 }
 
+.career-form-row {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
 .career-form-title {
   font-size: 16px;
   font-weight: 700;
@@ -39,6 +45,11 @@ input[type="number"] {
 }
 
 .career-form-label-description {
+  font-size: 14px;
+  color: #717680;
+}
+
+.career-form-label-description--large {
   font-size: 16px;
   color: #414651;
 }
@@ -53,6 +64,38 @@ input[type="number"] {
   color: #414651;
   font-size: 16px;
   font-weight: 500;
+}
+
+.career-form-salary-span {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6c757d;
+  font-size: 16px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.career-form-salary-currency {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6c757d;
+  font-size: 16px;
+  pointer-events: none;
+}
+
+
+.career-form-error-icon {
+  position: absolute;
+  right: 50px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #F04438;
+  font-size: 18px;
+  z-index: 1;
 }
 
 .career-form-optional-text {
@@ -80,6 +123,20 @@ input[type="number"] {
 .career-form-no-data {
   font-size: 14px;
   color: #414651;
+}
+
+.career-form-member-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border: 1px solid #e9eaeb;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  gap: 8px;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .career-form-generate-btn {

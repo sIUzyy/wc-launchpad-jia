@@ -26,7 +26,6 @@ export default function CustomDropdown(props) {
               color: screeningSetting ? "#181D27" : "#717680",
               fontWeight: 500,
               fontSize: "16px",
-              lineHeight: "24px",
             }}
           >
             {screeningSetting && screeningSetting !== ""
@@ -34,7 +33,7 @@ export default function CustomDropdown(props) {
               : placeholder}
           </span>
         </span>
-        <i className="la la-angle-down "></i>
+        <i className="la la-angle-down" style={{marginRight: "10px", fontSize: 12, color: "#181D27"}}></i>
       </button>
 
       <div

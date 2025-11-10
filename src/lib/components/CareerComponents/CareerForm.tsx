@@ -928,14 +928,14 @@ const handleSaveAndContinue = async () => {
       )}
 
 
-          {/* stepper (progress-bar) */}
-      <div
-        className={stepperStyles.stepContainer}
-         style={{
-           borderBottom: "1px solid #EAECF5", 
-           paddingBottom: "25px"
-        }}
-      >
+        {/* stepper (progress-bar) */}
+          <div
+            className={stepperStyles.stepContainer}
+            style={{
+              borderBottom: "1px solid #EAECF5", 
+              paddingBottom: "25px"
+            }}
+          >
             <div className={stepperStyles.step}>
               {steps.map((_, index) => (
                 <div className={stepperStyles.stepBar} key={index}>
@@ -1004,7 +1004,7 @@ const handleSaveAndContinue = async () => {
           {/* step 1: career details & team access */}
           {currentStep === 1 && (
             <>
-              {/* career-information section*/}
+              {/* 1. career-information section*/}
                 <div className="layered-card-middle">
                   <span className="career-form-title">1. Career Information</span>
                   <div className="layered-card-content">
@@ -1041,15 +1041,8 @@ const handleSaveAndContinue = async () => {
                         ></input>
                         {step1Errors.jobTitle && (
                           <i
-                            className="la la-exclamation-circle"
-                            style={{
-                              position: "absolute",
-                              right: "12px",
-                              top: "50%",
-                              transform: "translateY(-50%)",
-                              color: "#DC2626",
-                              fontSize: 18,
-                            }}
+                            className="la la-exclamation-circle career-form-error-icon"
+                            style={{ right: "12px"}}
                           ></i>
                         )}
                       </div>
@@ -1071,13 +1064,7 @@ const handleSaveAndContinue = async () => {
                       </span>
 
                       {/* employment type & arrangement */}
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          gap: 10,
-                        }}
-                      >
+                      <div className="career-form-row">
                         {/* employment type */}
                         <div style={{ width: "50%" }}>
                            <span className="career-form-input-label">
@@ -1148,13 +1135,7 @@ const handleSaveAndContinue = async () => {
                       </span>
 
                       {/* country & state / province & city */}
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          gap: 10,
-                        }}
-                      >
+                     <div className="career-form-row">
                         {/* country */}
                         <div style={{ width: "100%" }}>
                           {/* country - label */}
@@ -1291,11 +1272,11 @@ const handleSaveAndContinue = async () => {
                             <span className="slider round"></span>
                           </label>
                           <span
-                             style={{
-                          fontSize: "14px",
-                          fontWeight: 500,
-                          color: "#414651",
-                        }}
+                            style={{
+                            fontSize: "14px",
+                            fontWeight: 500,
+                            color: "#414651",
+                          }}
                           >
                             {salaryNegotiable ? "Negotiable" : "Fixed"}
                           </span>
@@ -1303,13 +1284,7 @@ const handleSaveAndContinue = async () => {
                       </div>
 
                       {/* minimum salary & maximum salary */}
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          gap: 10,
-                        }}
-                      >
+                      <div className="career-form-row">
                         {/* minimum salary */}
                         <div style={{ flex: 1 }}>
                           {/* minimum salary - label */}
@@ -1318,20 +1293,7 @@ const handleSaveAndContinue = async () => {
                           </span>
                           {/* minimum salary - input */}
                           <div style={{ position: "relative" }}>
-                            <span
-                              style={{
-                                position: "absolute",
-                                left: "12px",
-                                top: "50%",
-                                transform: "translateY(-50%)",
-                                color: "#6c757d",
-                                fontSize: "16px",
-                                pointerEvents: "none",
-                                zIndex: 1,
-                              }}
-                            >
-                              ₱
-                            </span>
+                          <span className="career-form-salary-span">₱</span>
                             <input
                               type="number"
                               className="form-control"
@@ -1363,32 +1325,9 @@ const handleSaveAndContinue = async () => {
                             />
                             {/* minimum salary - error */}
                             {step1Errors.minimumSalary && (
-                              <i
-                                className="la la-exclamation-circle"
-                                style={{
-                                  position: "absolute",
-                                  right: "50px",
-                                  top: "50%",
-                                  transform: "translateY(-50%)",
-                                  color: "#DC2626",
-                                  fontSize: 18,
-                                  zIndex: 1,
-                                }}
-                              ></i>
+                              <i className="la la-exclamation-circle career-form-error-icon"></i>
                             )}
-                            <span
-                              style={{
-                                position: "absolute",
-                                right: "10px",
-                                top: "50%",
-                                transform: "translateY(-50%)",
-                                color: "#6c757d",
-                                fontSize: "16px",
-                                pointerEvents: "none",
-                              }}
-                            >
-                              PHP
-                            </span>
+                          <span className="career-form-salary-currency">PHP</span>
                           </div>
                           {/* minimum salary - error */}
                           {step1Errors.minimumSalary && (
@@ -1406,20 +1345,7 @@ const handleSaveAndContinue = async () => {
                           </span>
                           {/* maximum salary - input */}
                           <div style={{ position: "relative" }}>
-                            <span
-                              style={{
-                                position: "absolute",
-                                left: "12px",
-                                top: "50%",
-                                transform: "translateY(-50%)",
-                                color: "#6c757d",
-                                fontSize: "16px",
-                                pointerEvents: "none",
-                                zIndex: 1,
-                              }}
-                            >
-                              ₱
-                            </span>
+                           <span className="career-form-salary-span">₱</span>
                             <input
                               type="number"
                               className="form-control"
@@ -1451,38 +1377,13 @@ const handleSaveAndContinue = async () => {
                             ></input>
                             {/* maximum salary - error */}
                             {step1Errors.maximumSalary && (
-                              <i
-                                className="la la-exclamation-circle"
-                                style={{
-                                  position: "absolute",
-                                  right: "50px",
-                                  top: "50%",
-                                  transform: "translateY(-50%)",
-                                  color: "#DC2626",
-                                  fontSize: 18,
-                                  zIndex: 1,
-                                }}
-                              ></i>
+                              <i className="la la-exclamation-circle career-form-error-icon"></i>
                             )}
-                            <span
-                              style={{
-                                position: "absolute",
-                                right: "10px",
-                                top: "50%",
-                                transform: "translateY(-50%)",
-                                color: "#6c757d",
-                                fontSize: "16px",
-                                pointerEvents: "none",
-                              }}
-                            >
-                              PHP
-                            </span>
+                            <span className="career-form-salary-currency">PHP</span>
                           </div>
                           {/* maximum salary - error */}
                           {step1Errors.maximumSalary && (
-                           <span className="career-form-input-error">
-                              This is a required field.
-                            </span>
+                           <span className="career-form-input-error">This is a required field.</span>
                           )}
                         </div>
                       </div>
@@ -1490,6 +1391,7 @@ const handleSaveAndContinue = async () => {
                   </div>
                 </div>
 
+              {/* 2. job-description section*/}
               <div className="layered-card-middle">
                 <span className="career-form-title">2. Job Description</span>
                 <div className="layered-card-content">
@@ -1505,39 +1407,38 @@ const handleSaveAndContinue = async () => {
                     
                   />
                   {step1Errors.description && (
-                    <span className="career-form-input-error">
-                      This is a required field.
-                    </span>
+                    <span className="career-form-input-error">This is a required field.</span>
                   )}
                 </div>
               </div>
 
+              {/* 3. team-access section*/}
               <div style={{marginBottom: "20px"}} className="layered-card-middle">
                 <span className="career-form-title">3. Team Access</span>
                 <div className="layered-card-content">
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: 12,
-                    }}
-                  >
+                  <div className="career-form-section" style={{gap: 12, marginBottom: 0}}>
+                   
+
+                    {/* parent of team access title and description & member dropdown */}
                     <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: 8,
-                      }}
+                      className="career-form-row" 
+                      style={{gap: 0, justifyContent: "space-between", borderBottom: "1px solid #E9EAEB", paddingBottom: "12px"}}
                     >
-                      <span className="career-form-label">
+
+                      {/* team access title and description */}
+                      <div>
+                        <span className="career-form-label" style={{display: "block"}}>
                         Add more members
+                        </span>
+                        
+                        <span className="career-form-label-description">
+                        You can add other members to collaborate on this career.
                       </span>
-                      <span className="career-form-label-description">
-                        You can add other members to collaborate on this career
-                      </span>
-                      {/* Member Dropdown */}
+                      </div>
+                     
+                      {/* add member dropdown */}
                       <div
-                        style={{ maxWidth: 480, position: "relative" }}
+                        style={{ width: 240, position: "relative" }}
                         data-member-dropdown
                       >
                         <button
@@ -1545,18 +1446,7 @@ const handleSaveAndContinue = async () => {
                           onClick={() =>
                             setMemberDropdownOpen(!memberDropdownOpen)
                           }
-                          style={{
-                            width: "100%",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "space-between",
-                            padding: "10px 16px",
-                            border: "1px solid #E9EAEB",
-                            borderRadius: "8px",
-                            background: "#fff",
-                            cursor: "pointer",
-                            gap: 8,
-                          }}
+                          className="career-form-member-button"
                         >
                           <div
                             style={{
@@ -1584,7 +1474,7 @@ const handleSaveAndContinue = async () => {
                           </div>
                           <i
                             className="la la-angle-down"
-                            style={{ fontSize: 12, color: "#717680" }}
+                            style={{ fontSize: 12, color: "#181D27" }}
                           ></i>
                         </button>
                         {memberDropdownOpen && (
@@ -1604,7 +1494,7 @@ const handleSaveAndContinue = async () => {
                               overflowY: "auto",
                             }}
                           >
-                            {/* Search Input */}
+                            {/* search input */}
                             <div
                               style={{
                                 padding: 12,
@@ -1629,7 +1519,7 @@ const handleSaveAndContinue = async () => {
                                 ></i>
                                 <input
                                   type="text"
-                                  placeholder="Q Search member"
+                                  placeholder="Search member"
                                   value={memberSearch}
                                   onChange={(e) =>
                                     setMemberSearch(e.target.value)
@@ -1644,7 +1534,7 @@ const handleSaveAndContinue = async () => {
                                 />
                               </div>
                             </div>
-                            {/* Member List */}
+                            {/* member list */}
                             <div style={{ padding: 4 }}>
                               {filteredMembers.length === 0 ? (
                                 <div
@@ -1761,13 +1651,9 @@ const handleSaveAndContinue = async () => {
                       </div>
                     </div>
 
-                    {/* Current User (Job Owner) */}
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: 8,
-                      }}
+                    {/* current user (job owner) */}
+                    <div className="career-form-section"
+                      style={{ gap: 8 }}
                     >
                       <div
                         style={{
@@ -1839,7 +1725,7 @@ const handleSaveAndContinue = async () => {
                             </span>
                           </div>
                         </div>
-                        <div style={{ width: 140, position: "relative" }}>
+                        <div style={{ width: 240, position: "relative" }}>
                           <CustomDropdown
                             onSelectSetting={() => {}}
                             screeningSetting="Job Owner"
@@ -1849,7 +1735,7 @@ const handleSaveAndContinue = async () => {
                         </div>
                       </div>
 
-                      {/* Added Team Members */}
+                      {/* added team members */}
                       {teamMembers.map((tm, index) => (
                         <div
                           key={tm.member.email || index}
@@ -1857,9 +1743,6 @@ const handleSaveAndContinue = async () => {
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "space-between",
-                            padding: "12px",
-                            border: "1px solid #E9EAEB",
-                            borderRadius: 8,
                           }}
                         >
                           <div
@@ -1932,9 +1815,9 @@ const handleSaveAndContinue = async () => {
                               gap: 12,
                             }}
                           >
-                            {/* Role Dropdown */}
+                            {/* role Dropdown */}
                             <div
-                              style={{ width: 140, position: "relative" }}
+                              style={{ width: 240, position: "relative" }}
                               data-role-dropdown
                               onMouseLeave={() =>
                                 setRoleDropdownOpen({
@@ -2080,9 +1963,9 @@ const handleSaveAndContinue = async () => {
                               }}
                             >
                               <i
-                                className="las la-trash"
-                                style={{ fontSize: 18 }}
-                              ></i>
+                            className="la la-trash text-red"
+                            style={{ fontSize: 20 }}
+                            ></i>
                             </button>
                           </div>
                         </div>
@@ -2105,9 +1988,9 @@ const handleSaveAndContinue = async () => {
               </div>
             </>
           )}
-           {/* end of currentStep === 1*/}
+           {/* end of step 1*/}
 
-          {/* 2. CV review & pre-screening*/}
+          {/* step 2: CV review & pre-screening */}
           {currentStep === 2 && (
             <>
               {/* cv review settings */}
@@ -2128,11 +2011,11 @@ const handleSaveAndContinue = async () => {
                     <span className="career-form-label">
                       CV Screening
                     </span>
-                    <span className="career-form-label-description">
+                    <span className="career-form-label-description--large">
                       Jia automatically endorses candidates who meet the chosen
                       criteria.
                     </span>
-                    <div style={{ maxWidth: 360 }}>
+                    <div style={{ maxWidth: 320 }}>
                       <CustomDropdown
                         onSelectSetting={(setting) =>
                           setScreeningSetting(setting)
@@ -2144,14 +2027,8 @@ const handleSaveAndContinue = async () => {
                     </div>
                   </div>
 
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: 8,
-                      marginTop: 12,
-                    }}
-                  >
+                  {/* cv secret prompt */}
+                  <div className="career-form-section" style={{ margin: "10px 0 0 0" }}>
                     <span
                       className="career-form-label"
                       style={{
@@ -2169,7 +2046,7 @@ const handleSaveAndContinue = async () => {
                       <span className="career-form-optional-text">(optional)</span>
                     </span>
 
-                    <span className="career-form-label-description">
+                   <span className="career-form-label-description--large">
                       Secret Prompts give you extra control over Jia's
                       evaluation style, complementing her accurate assessment of
                       requirements from the job description.
@@ -2275,7 +2152,7 @@ const handleSaveAndContinue = async () => {
                               <i className="las la-grip-vertical"></i>
                             </div>
 
-                            {/* Question Header */}
+                            {/* question Header */}
                             <div
                               style={{
                                 display: "flex",
@@ -2440,18 +2317,11 @@ const handleSaveAndContinue = async () => {
                               </div>
                             </div>
 
-                            {/* Options for Dropdown/Checkboxes */}
+                            {/* options for dropdown/checkboxes */}
                             {(q.type === "dropdown" ||
                               q.type === "checkboxes") &&
                               q.options && (
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    gap: 8,
-                                    marginBottom: 12,
-                                  }}
-                                >
+                                <div className="career-form-section">
                                   {q.options.map((option, optIndex) => (
                                     <div
                                       key={optIndex}
@@ -2672,7 +2542,7 @@ const handleSaveAndContinue = async () => {
                               </div>
                             )}
 
-                            {/* Delete Question Button */}
+                            {/* delete question button */}
                             <div
                               style={{
                                 display: "flex",
@@ -2689,20 +2559,21 @@ const handleSaveAndContinue = async () => {
                                     )
                                   );
                                 }}
-                                style={{
-                                  display: "flex",
-                                  alignItems: "center",
-                                  gap: 6,
-                                  padding: "8px 16px",
-                                  background: "#DC2626",
-                                  color: "#fff",
-                                  border: "none",
-                                  borderRadius: 6,
-                                  cursor: "pointer",
-                                  fontSize: 14,
-                                }}
+                               style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 6,
+                                padding: "8px 16px",
+                                background: "transparent", 
+                                color: "#B32318",          
+                                border: "1px solid #F04438", 
+                                borderRadius: 25,
+                                cursor: "pointer",
+                                fontSize: 14,
+                                fontWeight: 700
+                              }}
                               >
-                                <i className="las la-trash"></i>
+                                <i className="las la-trash" style={{fontSize: 18}}></i>
                                 Delete Question
                               </button>
                             </div>
@@ -2712,7 +2583,7 @@ const handleSaveAndContinue = async () => {
                     </div>
                   )}
 
-                  {/* Suggested Questions */}
+                  {/* suggested questions */}
                   <div
                     style={{
                       display: "flex",
@@ -2804,7 +2675,7 @@ const handleSaveAndContinue = async () => {
             </>
           )}
 
-          {/* 3. AI Interview Setup */}
+          {/* step 3: AI interview setup */}
           {currentStep === 3 && (
             <>
               <div className="layered-card-middle">
@@ -2812,10 +2683,8 @@ const handleSaveAndContinue = async () => {
                 <div className="layered-card-content">
                   {/* AI Interview Screening */}
                   <div
+                    className="career-form-section"
                     style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: 8,
                       borderBottom: "1px solid #E4E7EC",
                       paddingBottom: 15,
                     }}
@@ -2823,11 +2692,11 @@ const handleSaveAndContinue = async () => {
                     <span className="career-form-label">
                       AI Interview Screening
                     </span>
-                    <span className="career-form-label-description">
+                    <span className="career-form-label-description--large">
                       Jia automatically endorses candidates who meet the chosen
                       criteria.
                     </span>
-                    <div style={{ maxWidth: 360 }}>
+                    <div style={{ maxWidth: 320 }}>
                       <CustomDropdown
                         onSelectSetting={(setting) =>
                           setScreeningSetting(setting)
@@ -2839,18 +2708,14 @@ const handleSaveAndContinue = async () => {
                     </div>
                   </div>
 
-                  {/* Require Video on Interview */}
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: 8,
-                    }}
+                  {/* require video on interview */}
+                  <div className="career-form-section"
+                    style={{ gap: 8, marginBottom: 0}}
                   >
                    <span className="career-form-label">
                       Require Video on Interview
                     </span>
-                    <span className="career-form-label-description">
+                    <span className="career-form-label-description--large">
                       Require candidates to keep their camera on. Recordings
                       will appear on their analysis page.
                     </span>
@@ -2942,6 +2807,7 @@ const handleSaveAndContinue = async () => {
             </>
           )}
 
+          {/* step 4: Review Career */}
           {currentStep === 4 && (
             <>
               {/* Career Details & Team Access Review Section */}
