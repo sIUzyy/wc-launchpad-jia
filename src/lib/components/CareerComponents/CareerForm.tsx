@@ -2840,7 +2840,7 @@ const handleSaveAndContinue = async () => {
                     display: "grid",
                     gridTemplateColumns: "repeat(3, 1fr)",
                     rowGap: "16px",
-                      columnGap: "24px",
+                    columnGap: "24px",
                     marginTop: "10px",
                     paddingBottom: "8px",
                     borderBottom: "1px solid #E5E7EB",
@@ -3187,7 +3187,7 @@ const handleSaveAndContinue = async () => {
           ) : null}
         </h3>
 
-                    {preScreeningQuestions.length === 0 ? (
+                {preScreeningQuestions.length === 0 ? (
                       <span className="career-form-no-data">
                           No pre-screening questions added.
                         </span>
