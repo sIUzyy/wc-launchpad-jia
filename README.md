@@ -200,3 +200,10 @@ Please follow the existing code style and organization when contributing to the 
 - If you encounter issues with the MongoDB connection, verify your connection string and network access settings.
 - For Firebase authentication problems, check your Firebase service account credentials.
 - For development issues, try running `npm run clean` followed by `npm install` and `npm run dev`.
+
+## Personal Notes
+- (deployment): when deploying in vercel make sure the FIREBASE_SERVICE_ACCOUNT is in a single line.
+- (deployment): add cross-origin-opener-policy to the headers in next.config.js for login.
+- (deployment): change the network access of your mongodb atlas to allow access from vercel.
+- (deployment): add your deployed url to firebase auth. authorized domain.
+- (deployment): change the openai api key (backup) when the you reach the limit.
